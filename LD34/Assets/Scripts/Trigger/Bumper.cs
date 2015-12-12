@@ -6,7 +6,7 @@ public class Bumper : MonoBehaviour
 {
 
     [SerializeField]
-    private float Force;
+    private float Force = 1;
 
     // Use this for initialization
     void Start()
