@@ -15,6 +15,9 @@ public class PressurePlate : MonoBehaviour
     private Collider2D _collider;
     private Animation _animation;
 
+    [SerializeField]
+    private float RequiredSize = 7f;
+
     // Use this for initialization
     void Start()
     {
@@ -29,23 +32,26 @@ public class PressurePlate : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Pressure plate triggered");
-        this._collider.enabled = false;
-        if (this._animation == null)
-            Debug.LogWarning("No animation on pressure plate");
-        else
-            this._animation.Play();
+        if (other.gameObject.transform.localScale.x >= this.RequiredSize)
+        {
+            Debug.Log("Pressure plate triggered");
+            this._collider.enabled = false;
+            if (this._animation == null)
+                Debug.LogWarning("No animation on pressure plate");
+            else
+                this._animation.Play();
 
-        PressurePlateListener[] targets;
+            PressurePlateListener[] targets;
 
-        if (this.Target == null)
-            Debug.Log("PressurePlate null target");
-        else if ((targets = this.Target.GetComponents<PressurePlateListener>()) == null)
-            Debug.Log("No PressurePlateListener on target");
-        else
-            foreach (PressurePlateListener listener in targets)
-            {
-                listener.OnPressurePlateTriggered(this);
-            }
+            if (this.Target == null)
+                Debug.Log("PressurePlate null target");
+            else if ((targets = this.Target.GetComponents<PressurePlateListener>()) == null)
+                Debug.Log("No PressurePlateListener on target");
+            else
+                foreach (PressurePlateListener listener in targets)
+                {
+                    listener.OnPressurePlateTriggered(this);
+                }
+        }
     }
 }
