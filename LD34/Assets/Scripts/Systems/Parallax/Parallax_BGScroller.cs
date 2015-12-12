@@ -24,8 +24,7 @@ public class Parallax_BGScroller : MonoBehaviour
             this._tileSize = this._renderer.sprite.bounds.size.y * this.transform.localScale.y;
         else
             this._tileSize = this._renderer.sprite.bounds.size.x * this.transform.localScale.x;
-
-        Debug.Log("TileSize: " + this._tileSize + " | Aspect: " + Camera.main.aspect);
+        
         // set child
         childSPR.sprite = this._renderer.sprite;
         child.transform.localScale = this.transform.localScale;
