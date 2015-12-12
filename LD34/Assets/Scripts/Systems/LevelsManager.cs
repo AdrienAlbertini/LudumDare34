@@ -43,7 +43,7 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
 
     public void ReloadScene()
     {
-        this.LoadScene(this._currentSceneId);
+        this.StartCoroutine(this.LoadScene(this._currentSceneId));
     }
 
     public void SwitchToNextScene()
@@ -53,33 +53,47 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
             //this._asyncOp.allowSceneActivation = true;
             //this._isLoading = true;
             ++this._currentSceneId;
-            this.LoadScene(this._currentSceneId);
+            this.StartCoroutine(this.LoadScene(this._currentSceneId));
         }
     }
 
-    public void LoadScene(int sceneId, bool fade = true)
+    public IEnumerator LoadScene(int sceneId, bool fade = true)
     {
         if (sceneId >= 0 && sceneId < this.scenes.Count)
         {
             this._currentSceneId = sceneId;
             if (fade)
+            {
                 SceneFader.Instance.EndScene();
+                yield return new WaitForSeconds(SceneFader.Instance.FadeSpeed);
+            }
             SceneManager.LoadScene(this.scenes[sceneId], LoadSceneMode.Single);
             if (fade)
+            {
                 SceneFader.Instance.StartScene();
+                yield return new WaitForSeconds(SceneFader.Instance.FadeSpeed);
+
+            }
         }
     }
 
-    public void LoadScene(string scene, bool fade = true)
+    public IEnumerator LoadScene(string scene, bool fade = true)
     {
         if (this.scenes.Contains(scene))
         {
             this._currentSceneId = this.scenes.IndexOf(scene);
             if (fade)
+            {
                 SceneFader.Instance.EndScene();
+                yield return new WaitForSeconds(SceneFader.Instance.FadeSpeed);
+            }
             SceneManager.LoadScene(scene, LoadSceneMode.Single);
             if (fade)
+            {
                 SceneFader.Instance.StartScene();
+                yield return new WaitForSeconds(SceneFader.Instance.FadeSpeed);
+
+            }
         }
     }
 }
