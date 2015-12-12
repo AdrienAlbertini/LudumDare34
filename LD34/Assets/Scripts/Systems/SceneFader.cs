@@ -2,7 +2,7 @@
 using System.Collections;
 
 [RequireComponent(typeof(GUITexture))]
-public class SceneFader : MonoBehaviour
+public class SceneFader : SingletonBehaviour<SceneFader>
 {
     [SerializeField]
     private float FadeSpeed = 1.5f;
@@ -14,11 +14,11 @@ public class SceneFader : MonoBehaviour
     void Awake()
     {
         this._guiTexture = this.GetComponent<GUITexture>();
-        this._guiTexture.pixelInset = new Rect(0f, 0f, Screen.width, Screen.height);
+        this._guiTexture.pixelInset = new Rect(0f, -Screen.height / 2.0f, Screen.width, Screen.height);
     }
 
 
-    void Update()
+    void FixedUpdate()
     {
         if (this._sceneStarting)
             this.StartScene();
@@ -35,8 +35,7 @@ public class SceneFader : MonoBehaviour
         this._guiTexture.color = Color.Lerp(this._guiTexture.color, Color.black, this.FadeSpeed * Time.deltaTime);
     }
 
-
-    void StartScene()
+    public void StartScene()
     {
         FadeToClear();
 
@@ -47,7 +46,6 @@ public class SceneFader : MonoBehaviour
             this._sceneStarting = false;
         }
     }
-
 
     public void EndScene()
     {

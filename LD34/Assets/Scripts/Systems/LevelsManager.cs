@@ -10,29 +10,35 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
     private bool _isNextSceneLoaded = false;
     private AsyncOperation _asyncOp;
     private bool _isLoading = false;
-   
-    IEnumerator Preloader()
+
+    //IEnumerator Preloader()
+    //{
+    //    this._asyncOp = SceneManager.LoadSceneAsync(this.scenes[_currentSceneId + 1], LoadSceneMode.Additive);
+    //    this._asyncOp.allowSceneActivation = false;
+    //    yield return this._asyncOp;
+    //}
+
+    void Awake()
     {
-        this._asyncOp.allowSceneActivation = false;
-        this._asyncOp = SceneManager.LoadSceneAsync(this.scenes[_currentSceneId + 1], LoadSceneMode.Additive);
-        yield return this._asyncOp;
+        //this.PreloadNextScene();
     }
 
     void FixedUpdate()
     {
-        if (this._asyncOp != null && this._asyncOp.isDone && this._isLoading)
-        {
-            this._isLoading = false;
-            this.PreloadNextScene();
-        }
+        //if (this._asyncOp != null && this._asyncOp.isDone && this._isLoading)
+        //{
+        //    this._isLoading = false;
+        //  //  this.PreloadNextScene();
+        //}
     }
 
     public void PreloadNextScene()
     {
-        if ((this._currentSceneId + 1) < this.scenes.Count)
-        {
-            StartCoroutine(this.Preloader());
-        }
+        //if ((this._currentSceneId + 1) < this.scenes.Count)
+        //{
+        //    this._isLoading = true;
+        //    StartCoroutine(this.Preloader());
+        //}
     }
 
     public void ReloadScene()
@@ -44,27 +50,36 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
     {
         if (this._currentSceneId >= 0 && this._currentSceneId < this.scenes.Count)
         {
-            this._asyncOp.allowSceneActivation = true;
-            this._isLoading = true;
+            //this._asyncOp.allowSceneActivation = true;
+            //this._isLoading = true;
             ++this._currentSceneId;
+            this.LoadScene(this._currentSceneId);
         }
     }
 
-    public void LoadScene(int sceneId)
+    public void LoadScene(int sceneId, bool fade = true)
     {
         if (sceneId >= 0 && sceneId < this.scenes.Count)
         {
             this._currentSceneId = sceneId;
+            if (fade)
+                SceneFader.Instance.EndScene();
             SceneManager.LoadScene(this.scenes[sceneId], LoadSceneMode.Single);
+            if (fade)
+                SceneFader.Instance.StartScene();
         }
     }
 
-    public void LoadScene(string scene)
+    public void LoadScene(string scene, bool fade = true)
     {
         if (this.scenes.Contains(scene))
         {
             this._currentSceneId = this.scenes.IndexOf(scene);
-            SceneManager.LoadScene(scene);
+            if (fade)
+                SceneFader.Instance.EndScene();
+            SceneManager.LoadScene(scene, LoadSceneMode.Single);
+            if (fade)
+                SceneFader.Instance.StartScene();
         }
     }
 }
