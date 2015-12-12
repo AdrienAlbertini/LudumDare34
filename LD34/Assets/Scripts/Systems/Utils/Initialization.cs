@@ -5,9 +5,10 @@ public class Initialization : MonoBehaviour
 {
 
     // Use this for initialization
-    void Awake()
+    void Start()
     {
         ConfigurationData.Instance.Initialize();
+        SaveManager.instance.load();
     }
 
     // Update is called once per frame

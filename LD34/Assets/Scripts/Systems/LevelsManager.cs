@@ -65,8 +65,10 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
             {
                 SceneFader.Instance.StartScene();
                 yield return new WaitForSeconds(SceneFader.Instance.FadeSpeed);
-
+                SaveManager.data.levelID = this._currentSceneId;
+                SaveManager.instance.save();
             }
+
         } 
     }
 }
