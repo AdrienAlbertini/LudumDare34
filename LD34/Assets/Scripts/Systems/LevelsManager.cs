@@ -16,9 +16,48 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
         DontDestroyOnLoad(this);
     }
 
+    private IEnumerator _StartLoad(string scene, bool fade)
+    {
+        if (fade)
+        {
+            SceneFader.Instance.EndScene();
+            yield return new WaitForSeconds(SceneFader.Instance.FadeSpeed);
+        }
+        SceneManager.LoadScene(scene, LoadSceneMode.Single);
+        if (fade)
+        {
+            SceneFader.Instance.StartScene();
+            yield return new WaitForSeconds(SceneFader.Instance.FadeSpeed);
+            SaveManager.data.levelID = this._currentSceneId;
+            SaveManager.instance.save();
+        }
+    }
+    
+    public void LoadScene(int sceneId, bool fade = true)
+    {
+        Debug.Log("SceneId to load: " + sceneId);
+        if (sceneId >= 0 && sceneId < this.scenes.Count)
+        {
+            Debug.Log("Scene contained");
+            this._currentSceneId = sceneId;
+            StartCoroutine(this._StartLoad(this.scenes[sceneId], fade));
+        }
+    }
+
+    public void LoadScene(string scene, bool fade = true)
+    {
+        Debug.Log("Scene to load: " + scene);
+        if (this.scenes.Contains(scene))
+        {
+            Debug.Log("Scene contained");
+            this._currentSceneId = this.scenes.IndexOf(scene);
+            StartCoroutine(this._StartLoad(scene, fade));
+        }
+    }
+
     public void ReloadScene()
     {
-        this.StartCoroutine(this.LoadScene(this._currentSceneId));
+       this.LoadScene(this._currentSceneId);
     }
 
     public void SwitchToNextScene()
@@ -26,49 +65,7 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
         if (this._currentSceneId >= 0 && this._currentSceneId < this.scenes.Count)
         {
             ++this._currentSceneId;
-            this.StartCoroutine(this.LoadScene(this._currentSceneId));
+            this.LoadScene(this._currentSceneId);
         }
-    }
-
-    public IEnumerator LoadScene(int sceneId, bool fade = true)
-    {
-        if (sceneId >= 0 && sceneId < this.scenes.Count)
-        {
-            this._currentSceneId = sceneId;
-            if (fade)
-            {
-                SceneFader.Instance.EndScene();
-                yield return new WaitForSeconds(SceneFader.Instance.FadeSpeed);
-            }
-            SceneManager.LoadScene(this.scenes[sceneId], LoadSceneMode.Single);
-            if (fade)
-            {
-                SceneFader.Instance.StartScene();
-                yield return new WaitForSeconds(SceneFader.Instance.FadeSpeed);
-
-            }
-        }
-    }
-
-    public IEnumerator LoadScene(string scene, bool fade = true)
-    {
-        if (this.scenes.Contains(scene))
-        {
-            this._currentSceneId = this.scenes.IndexOf(scene);
-            if (fade)
-            {
-                SceneFader.Instance.EndScene();
-                yield return new WaitForSeconds(SceneFader.Instance.FadeSpeed);
-            }
-            SceneManager.LoadScene(scene, LoadSceneMode.Single);
-            if (fade)
-            {
-                SceneFader.Instance.StartScene();
-                yield return new WaitForSeconds(SceneFader.Instance.FadeSpeed);
-                SaveManager.data.levelID = this._currentSceneId;
-                SaveManager.instance.save();
-            }
-
-        } 
     }
 }
