@@ -42,9 +42,12 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
 
     public void SwitchToNextScene()
     {
-        this._asyncOp.allowSceneActivation = true;
-        this._isLoading = true;
-        ++this._currentSceneId;
+        if (this._currentSceneId >= 0 && this._currentSceneId < this.scenes.Count)
+        {
+            this._asyncOp.allowSceneActivation = true;
+            this._isLoading = true;
+            ++this._currentSceneId;
+        }
     }
 
     public void LoadScene(int sceneId)
