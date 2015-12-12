@@ -4,7 +4,7 @@ using System.Collections;
 public class Teleporter : MonoBehaviour {
 
     [SerializeField]
-    private Vector3 TargetPosition;
+    private GameObject TargetObject;
 
 	// Use this for initialization
 	void Start () {
@@ -17,6 +17,6 @@ public class Teleporter : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        other.transform.position = TargetPosition;
+        other.transform.position = TargetObject.transform.position;
     }
 }

@@ -1,18 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(Collider2D))]
 public class Bumper : MonoBehaviour
 {
 
     [SerializeField]
     private float Force;
 
-    private Collider2D _collider;
-
     // Use this for initialization
     void Start()
     {
-        this._collider = this.GetComponent<Collider2D>();
     }
 
     // Update is called once per frame

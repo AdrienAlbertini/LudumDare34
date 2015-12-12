@@ -6,6 +6,7 @@ public interface PressurePlateListener
     void OnPressurePlateTriggered(PressurePlate sender);
 }
 
+[RequireComponent(typeof(Collider2D))]
 public class PressurePlate : MonoBehaviour
 {
     [SerializeField]
@@ -30,7 +31,10 @@ public class PressurePlate : MonoBehaviour
     {
         Debug.Log("Pressure plate triggered");
         this._collider.enabled = false;
-        this._animation.Play();
+        if (this._animation == null)
+            Debug.LogWarning("No animation on pressure plate");
+        else
+            this._animation.Play();
 
         PressurePlateListener[] targets;
 
