@@ -69,9 +69,4 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
             }
         } 
     }
-
-    public int GetCurrentSceneId()
-    {
-        return this._currentSceneId;
-    }
 }
