@@ -20,6 +20,7 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
 
     void Awake()
     {
+        DontDestroyOnLoad(this);
         //this.PreloadNextScene();
     }
 
