@@ -144,7 +144,6 @@ namespace UnityStandardAssets._2D
               float velocityY =  m_JumpForce * this.transform.localScale.x;
               if (velocityY > m_MaxJumpVelocity)
                 velocityY = m_MaxJumpVelocity;
-                Debug.Log(velocityY);
               tmp.y = velocityY;
               m_Rigidbody2D.velocity = tmp;
             }

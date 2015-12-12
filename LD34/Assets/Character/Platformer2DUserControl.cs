@@ -34,13 +34,7 @@ using UnityStandardAssets.CrossPlatformInput;
             {
                 this.transform.localScale = new Vector3(MainController.SizePLayerB,MainController.SizePLayerB,MainController.SizePLayerB);
             }
-        }
-
-
-        private void FixedUpdate()
-        {
-            // Read the inputs.
-            bool crouch = Input.GetKey(KeyCode.LeftControl);
+                        bool crouch = Input.GetKey(KeyCode.LeftControl);
             float h = 0.0f;
             float v = 0.0f;
             if (IsPLayerA)
@@ -68,5 +62,11 @@ using UnityStandardAssets.CrossPlatformInput;
             m_Character.Move(h, crouch, Jump);
             m_Jump = false;
             Jump = false;
+        }
+
+
+        private void FixedUpdate()
+        {
+            // Read the inputs.
         }
     }
