@@ -10,29 +10,47 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
     private bool _isNextSceneLoaded = false;
     private AsyncOperation _asyncOp;
     private bool _isLoading = false;
-    
+
     void Awake()
     {
         DontDestroyOnLoad(this);
+        SceneFader.Instance.fadeOver += ScenefadeOver;
+    }
+
+    private bool _fadeIsOver;
+    private void ScenefadeOver(object sender, System.EventArgs e)
+    {
+        this._fadeIsOver = true;
+    }
+
+    void OnLevelWasLoaded()
+    {
+        this._isLoading = false;
     }
 
     private IEnumerator _StartLoad(string scene, bool fade)
     {
+        this._isLoading = true;
         if (fade)
         {
+            this._fadeIsOver = false;
             SceneFader.Instance.EndScene();
-            yield return new WaitForSeconds(SceneFader.Instance.FadeSpeed);
+            while (this._fadeIsOver == false)
+                yield return new WaitForFixedUpdate();
+            //yield return new WaitForSeconds(SceneFader.Instance.fadeSpeed);
         }
         SceneManager.LoadScene(scene, LoadSceneMode.Single);
+        while (this._isLoading)
+            yield return new WaitForFixedUpdate();
         if (fade)
         {
             SceneFader.Instance.StartScene();
-            yield return new WaitForSeconds(SceneFader.Instance.FadeSpeed);
-            SaveManager.data.levelID = this._currentSceneId;
-            SaveManager.instance.save();
+            //yield return new WaitForSeconds(SceneFader.Instance.fadeSpeed);
         }
+        SaveManager.data.levelID = this._currentSceneId;
+        SaveManager.instance.save();
     }
-    
+
     public void LoadScene(int sceneId, bool fade = true)
     {
         if (sceneId >= 0 && sceneId < this.scenes.Count)
@@ -46,6 +64,8 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
     {
         if (this.scenes.Contains(scene))
         {
+            Debug.Log("Load Scene: " + scene);
+            Debug.Log("SceneId: " + this.scenes.IndexOf(scene));
             this._currentSceneId = this.scenes.IndexOf(scene);
             StartCoroutine(this._StartLoad(scene, fade));
         }
@@ -53,7 +73,7 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
 
     public void ReloadScene()
     {
-       this.LoadScene(this._currentSceneId);
+        this.LoadScene(this._currentSceneId);
     }
 
     public void SwitchToNextScene()

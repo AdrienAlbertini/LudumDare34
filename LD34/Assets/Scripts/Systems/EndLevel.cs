@@ -12,7 +12,7 @@ public class EndLevel : MonoBehaviour
         this._playerCount = 0;
 	}
 	
-    void OnCollisionEnter2D(Collision2D coll)
+    void OnTriggerEnter2D(Collider2D coll)
     {
         if (coll.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
