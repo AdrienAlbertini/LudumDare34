@@ -36,7 +36,6 @@ public class MainMenuManager : MonoBehaviour
 
     public void goToLevel(string scene)
     {
-        Debug.Log("tototo : " + scene);
         LevelsManager.Instance.LoadScene(scene);
     }
 
