@@ -27,7 +27,6 @@ public class MenuManager : MonoBehaviour {
 
     void OnGUI()
     {
-        GUILayout.Label("Press Enter To Start Game");
         if (Event.current.Equals(Event.KeyboardEvent("Escape")))
         {
             Cursor.visible = true;
