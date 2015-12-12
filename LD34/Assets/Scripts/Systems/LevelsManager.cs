@@ -35,10 +35,8 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
     
     public void LoadScene(int sceneId, bool fade = true)
     {
-        Debug.Log("SceneId to load: " + sceneId);
         if (sceneId >= 0 && sceneId < this.scenes.Count)
         {
-            Debug.Log("Scene contained");
             this._currentSceneId = sceneId;
             StartCoroutine(this._StartLoad(this.scenes[sceneId], fade));
         }
@@ -46,10 +44,8 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
 
     public void LoadScene(string scene, bool fade = true)
     {
-        Debug.Log("Scene to load: " + scene);
         if (this.scenes.Contains(scene))
         {
-            Debug.Log("Scene contained");
             this._currentSceneId = this.scenes.IndexOf(scene);
             StartCoroutine(this._StartLoad(scene, fade));
         }
