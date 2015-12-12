@@ -4,7 +4,7 @@ using System.Collections;
 public class ParallaxBG : MonoBehaviour
 {
     public float scrollSpeed = 1.0f;
-    public float tileSizeZ = 0.0f;
+    public float tileSizeX = 0.0f;
 
     private Vector3 _startPosition = Vector3.zero;
 
@@ -13,9 +13,9 @@ public class ParallaxBG : MonoBehaviour
         this._startPosition = transform.position;
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        float newPos = Mathf.Repeat(Time.time * this.scrollSpeed, this.tileSizeZ);
-        transform.position = this._startPosition + Vector3.forward * newPos;
+        float newPos = Mathf.Repeat(Time.time * this.scrollSpeed, this.tileSizeX);
+        transform.position = this._startPosition + Vector3.right * newPos;
     }
 }
