@@ -16,8 +16,8 @@ namespace UnityStandardAssets._2D
         private bool m_LeftCollide;
         private bool m_RightCollide;
         private Transform m_CeilingCheck;   // A position marking where to check for ceilings
-        private Transform m_LeftCheck;   // A position marking where to check for ceilings
-        private Transform m_RightCheck;   // A position marking where to check for ceilings
+        private Transform m_TopCheck;   // A position marking where to check for ceilings
+        private Transform m_DownCheck;   // A position marking where to check for ceilings
         
         const float k_CeilingRadius = .01f; // Radius of the overlap circle to determine if the player can stand up
        // private Animator m_Anim;            // Reference to the player's animator component.
@@ -29,8 +29,8 @@ namespace UnityStandardAssets._2D
             // Setting up references.
             m_GroundCheck = transform.Find("GroundCheck");
             m_CeilingCheck = transform.Find("CeilingCheck");
-            m_LeftCheck = transform.Find("LeftCheck");
-            m_RightCheck = transform.Find("RightCheck");
+            m_TopCheck = transform.Find("TopCheck");
+            m_DownCheck = transform.Find("BottomCheck");
          //   m_Anim = GetComponent<Animator>();
             m_Rigidbody2D = GetComponent<Rigidbody2D>();
         }
@@ -51,23 +51,35 @@ namespace UnityStandardAssets._2D
                     m_Grounded = true;
             }
             
-            Collider2D[] collidersLeft = Physics2D.OverlapCircleAll(m_LeftCheck.position, .2f, m_WhatIsGround);
-            for (int i = 0; i < collidersLeft.Length; i++)
+            RaycastHit2D[] collidersLeftTop = Physics2D.RaycastAll(m_TopCheck.position, (this.transform.right * -1), 0.5f * this.transform.localScale.x + 0.05f);
+            for (int i = 0; i < collidersLeftTop.Length; i++)
             {
-                if (collidersLeft[i].gameObject != gameObject)
-                {
+                if (collidersLeftTop[i].transform.gameObject != gameObject)
                     m_LeftCollide = true;
-                    Debug.Log(collidersLeft[i].gameObject);
-                }
             }
             
-                        Collider2D[] collidersRight = Physics2D.OverlapCircleAll(m_RightCheck.position, .2f, m_WhatIsGround);
-            for (int i = 0; i < collidersRight.Length; i++)
+            RaycastHit2D[] collidersLeftBottom = Physics2D.RaycastAll(m_DownCheck.position, (this.transform.right * -1), 0.5f * this.transform.localScale.x +  0.05f);
+            for (int i = 0; i < collidersLeftBottom.Length; i++)
             {
-                if (collidersRight[i].gameObject != gameObject)
+                if (collidersLeftBottom[i].transform.gameObject != gameObject)
+                    m_LeftCollide = true;
+            }
+            
+            RaycastHit2D[] collidersRightTop = Physics2D.RaycastAll(m_TopCheck.position, (this.transform.right), 0.5f * this.transform.localScale.x +  0.05f);
+            for (int i = 0; i < collidersRightTop.Length; i++)
+            {
+                if (collidersRightTop[i].transform.gameObject != gameObject)
+                    m_RightCollide = true;
+            }
+            
+            Debug.DrawRay(m_DownCheck.position, this.transform.right * 0.51f * this.transform.localScale.x, Color.white, 0.1f);
+            RaycastHit2D[] collidersRightBottom = Physics2D.RaycastAll(m_DownCheck.position, (this.transform.right), 0.5f * this.transform.localScale.x + 0.05f);
+            for (int i = 0; i < collidersRightBottom.Length; i++)
+            {
+                if (collidersRightBottom[i].transform.gameObject != gameObject)
                 {
                     m_RightCollide = true;
-                Debug.Log(collidersRight[i].gameObject);
+                    Debug.Log(collidersRightBottom[i].transform.gameObject);
                 }
             }
            // m_Anim.SetBool("Ground", m_Grounded);
@@ -129,7 +141,7 @@ namespace UnityStandardAssets._2D
               //  m_Anim.SetBool("Ground", false);
                // m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
               Vector2 tmp =  m_Rigidbody2D.velocity;
-              tmp.y = m_JumpForce;
+              tmp.y = m_JumpForce * this.transform.localScale.x;
               m_Rigidbody2D.velocity = tmp;
             }
         }
