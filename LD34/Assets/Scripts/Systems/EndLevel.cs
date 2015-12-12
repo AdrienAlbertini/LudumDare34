@@ -2,7 +2,8 @@
 using System.Collections;
 
 [RequireComponent(typeof(Collider2D))]
-public class EndLevel : MonoBehaviour {
+public class EndLevel : MonoBehaviour
+{
 
     private int _playerCount;
 

@@ -10,36 +10,10 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
     private bool _isNextSceneLoaded = false;
     private AsyncOperation _asyncOp;
     private bool _isLoading = false;
-
-    //IEnumerator Preloader()
-    //{
-    //    this._asyncOp = SceneManager.LoadSceneAsync(this.scenes[_currentSceneId + 1], LoadSceneMode.Additive);
-    //    this._asyncOp.allowSceneActivation = false;
-    //    yield return this._asyncOp;
-    //}
-
+    
     void Awake()
     {
         DontDestroyOnLoad(this);
-        //this.PreloadNextScene();
-    }
-
-    void FixedUpdate()
-    {
-        //if (this._asyncOp != null && this._asyncOp.isDone && this._isLoading)
-        //{
-        //    this._isLoading = false;
-        //  //  this.PreloadNextScene();
-        //}
-    }
-
-    public void PreloadNextScene()
-    {
-        //if ((this._currentSceneId + 1) < this.scenes.Count)
-        //{
-        //    this._isLoading = true;
-        //    StartCoroutine(this.Preloader());
-        //}
     }
 
     public void ReloadScene()
@@ -51,8 +25,6 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
     {
         if (this._currentSceneId >= 0 && this._currentSceneId < this.scenes.Count)
         {
-            //this._asyncOp.allowSceneActivation = true;
-            //this._isLoading = true;
             ++this._currentSceneId;
             this.StartCoroutine(this.LoadScene(this._currentSceneId));
         }
@@ -95,6 +67,11 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
                 yield return new WaitForSeconds(SceneFader.Instance.FadeSpeed);
 
             }
-        }
+        } 
+    }
+
+    public int GetCurrentSceneId()
+    {
+        return this._currentSceneId;
     }
 }
