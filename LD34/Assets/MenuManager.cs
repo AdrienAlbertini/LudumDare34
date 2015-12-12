@@ -22,6 +22,7 @@ public class MenuManager : MonoBehaviour {
     {
         this.holder.SetActive(false);
         Time.timeScale = 1;
+        Cursor.visible = false;
     }
 
     void OnGUI()
@@ -29,6 +30,7 @@ public class MenuManager : MonoBehaviour {
         GUILayout.Label("Press Enter To Start Game");
         if (Event.current.Equals(Event.KeyboardEvent("Escape")))
         {
+            Cursor.visible = true;
             this.holder.SetActive(true);
             Time.timeScale = 0;
         }

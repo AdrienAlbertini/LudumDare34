@@ -19,6 +19,7 @@ public class EndLevel : MonoBehaviour {
             ++this._playerCount;
             if (this._playerCount == 2)
             {
+                Debug.Log("Switch to next lvl");
                 LevelsManager.Instance.SwitchToNextScene();
             }
         }

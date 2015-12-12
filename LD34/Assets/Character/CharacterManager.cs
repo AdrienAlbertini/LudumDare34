@@ -22,13 +22,13 @@ public class CharacterManager : MonoBehaviour {
 		{
 			if (_IsPlayerA)
 			{
-					SizePlayerA += 0.5f;
-					SizePLayerB -=0.5f;
+					SizePlayerA += 0.1f;
+					SizePLayerB -=0.1f;
 			}
 			else
 			{
-					SizePlayerA -= 0.5f;
-					SizePLayerB +=0.5f;
+					SizePlayerA -= 0.1f;
+					SizePLayerB +=0.1f;
 			}
 			
 			if (SizePlayerA > MaxSize)
