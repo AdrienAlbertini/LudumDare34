@@ -7,6 +7,7 @@ public class Bumper : MonoBehaviour
 
     [SerializeField]
     private float Force = 1;
+    public bool bumperOn;
 
     // Use this for initialization
     void Start()
@@ -21,6 +22,8 @@ public class Bumper : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D coll)
     {
+        if (!bumperOn)
+            return;
         Rigidbody2D body = coll.gameObject.GetComponent<Rigidbody2D>();
 
         if (body == null)

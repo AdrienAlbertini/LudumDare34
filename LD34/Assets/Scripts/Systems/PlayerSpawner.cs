@@ -15,4 +15,12 @@ public class PlayerSpawner : MonoBehaviour {
             Instantiate(this.PlayerPrefab, this.transform.position, Quaternion.identity);
         }
     }
+
+    void FixedUpdate()
+    {
+        if (Input.GetButtonUp("Restart"))
+        {
+            LevelsManager.Instance.ReloadScene();
+        }
+    }
 }
