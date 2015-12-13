@@ -115,7 +115,7 @@ namespace UnityStandardAssets._2D
             {
                 Vector2 vel = m_PLayertotransfer.GetComponent<Rigidbody2D>().velocity;
                 Vector2 _vel = this.m_Rigidbody2D.velocity;
-                this.m_Rigidbody2D.velocity = vel;
+                this.m_Rigidbody2D.velocity = new Vector2(vel.x, this.m_Rigidbody2D.velocity.y);
             }
             // m_Anim.SetBool("Ground", m_Grounded);
 
