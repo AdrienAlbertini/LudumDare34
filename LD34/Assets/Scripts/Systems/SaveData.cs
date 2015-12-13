@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 
 [Serializable]
-public class saveData
+public class SaveData
 {
-    public int levelID;
+    public int levelID = 1;
 }

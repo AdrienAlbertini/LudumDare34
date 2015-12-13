@@ -14,6 +14,7 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
     void Awake()
     {
         DontDestroyOnLoad(this);
+        Debug.Log(Application.persistentDataPath);
         SceneFader.Instance.fadeOver += ScenefadeOver;
     }
 
@@ -49,8 +50,11 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
             SceneFader.Instance.StartScene();
             //yield return new WaitForSeconds(SceneFader.Instance.fadeSpeed);
         }
-        SaveManager.data.levelID = this._currentSceneId;
-        SaveManager.instance.save();
+        if (scene.StartsWith("Lvl"))
+        {
+            SaveManager.data.levelID = this._currentSceneId;
+            SaveManager.instance.save();
+        }
     }
 
     public void LoadScene(int sceneId, bool fade = true)

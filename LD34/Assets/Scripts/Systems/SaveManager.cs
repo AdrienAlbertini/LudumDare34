@@ -8,7 +8,7 @@ using System;
 [Serializable]
 public class SaveManager : MonoBehaviour
 {
-    public static saveData data;
+    public static SaveData data;
 
     public static SaveManager instance;
 
@@ -16,7 +16,7 @@ public class SaveManager : MonoBehaviour
     void Awake()
     {
         SaveManager.instance = this;
-        SaveManager.data = new saveData();
+        SaveManager.data = new SaveData();
     }
 
     public void save()
@@ -39,7 +39,7 @@ public class SaveManager : MonoBehaviour
             FileStream file = File.Open(Application.persistentDataPath + "/saveData.dat", FileMode.Open);
             try
             {
-                data = (saveData)bf.Deserialize(file);
+                data = (SaveData)bf.Deserialize(file);
                 file.Close();
                 Debug.Log("Scene loaded ! ");
             }
