@@ -11,90 +11,77 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
     private AsyncOperation _asyncOp;
     private bool _isLoading = false;
 
-    //IEnumerator Preloader()
-    //{
-    //    this._asyncOp = SceneManager.LoadSceneAsync(this.scenes[_currentSceneId + 1], LoadSceneMode.Additive);
-    //    this._asyncOp.allowSceneActivation = false;
-    //    yield return this._asyncOp;
-    //}
-
     void Awake()
     {
         DontDestroyOnLoad(this);
-        //this.PreloadNextScene();
+        SceneFader.Instance.fadeOver += ScenefadeOver;
     }
 
-    void FixedUpdate()
+    private bool _fadeIsOver;
+    private void ScenefadeOver(object sender, System.EventArgs e)
     {
-        //if (this._asyncOp != null && this._asyncOp.isDone && this._isLoading)
-        //{
-        //    this._isLoading = false;
-        //  //  this.PreloadNextScene();
-        //}
+        this._fadeIsOver = true;
     }
 
-    public void PreloadNextScene()
+    void OnLevelWasLoaded()
     {
-        //if ((this._currentSceneId + 1) < this.scenes.Count)
-        //{
-        //    this._isLoading = true;
-        //    StartCoroutine(this.Preloader());
-        //}
+        this._isLoading = false;
+    }
+
+    private IEnumerator _StartLoad(string scene, bool fade)
+    {
+        this._isLoading = true;
+        if (fade)
+        {
+            this._fadeIsOver = false;
+            SceneFader.Instance.EndScene();
+            while (this._fadeIsOver == false)
+                yield return new WaitForFixedUpdate();
+            //yield return new WaitForSeconds(SceneFader.Instance.fadeSpeed);
+        }
+        SceneManager.LoadScene(scene, LoadSceneMode.Single);
+        while (this._isLoading)
+            yield return new WaitForFixedUpdate();
+        if (fade)
+        {
+            SceneFader.Instance.StartScene();
+            //yield return new WaitForSeconds(SceneFader.Instance.fadeSpeed);
+        }
+        SaveManager.data.levelID = this._currentSceneId;
+        SaveManager.instance.save();
+    }
+
+    public void LoadScene(int sceneId, bool fade = true)
+    {
+        if (sceneId >= 0 && sceneId < this.scenes.Count)
+        {
+            this._currentSceneId = sceneId;
+            StartCoroutine(this._StartLoad(this.scenes[sceneId], fade));
+        }
+    }
+
+    public void LoadScene(string scene, bool fade = true)
+    {
+        if (this.scenes.Contains(scene))
+        {
+            Debug.Log("Load Scene: " + scene);
+            Debug.Log("SceneId: " + this.scenes.IndexOf(scene));
+            this._currentSceneId = this.scenes.IndexOf(scene);
+            StartCoroutine(this._StartLoad(scene, fade));
+        }
     }
 
     public void ReloadScene()
     {
-        this.StartCoroutine(this.LoadScene(this._currentSceneId));
+        this.LoadScene(this._currentSceneId);
     }
 
     public void SwitchToNextScene()
     {
         if (this._currentSceneId >= 0 && this._currentSceneId < this.scenes.Count)
         {
-            //this._asyncOp.allowSceneActivation = true;
-            //this._isLoading = true;
             ++this._currentSceneId;
-            this.StartCoroutine(this.LoadScene(this._currentSceneId));
-        }
-    }
-
-    public IEnumerator LoadScene(int sceneId, bool fade = true)
-    {
-        if (sceneId >= 0 && sceneId < this.scenes.Count)
-        {
-            this._currentSceneId = sceneId;
-            if (fade)
-            {
-                SceneFader.Instance.EndScene();
-                yield return new WaitForSeconds(SceneFader.Instance.FadeSpeed);
-            }
-            SceneManager.LoadScene(this.scenes[sceneId], LoadSceneMode.Single);
-            if (fade)
-            {
-                SceneFader.Instance.StartScene();
-                yield return new WaitForSeconds(SceneFader.Instance.FadeSpeed);
-
-            }
-        }
-    }
-
-    public IEnumerator LoadScene(string scene, bool fade = true)
-    {
-        if (this.scenes.Contains(scene))
-        {
-            this._currentSceneId = this.scenes.IndexOf(scene);
-            if (fade)
-            {
-                SceneFader.Instance.EndScene();
-                yield return new WaitForSeconds(SceneFader.Instance.FadeSpeed);
-            }
-            SceneManager.LoadScene(scene, LoadSceneMode.Single);
-            if (fade)
-            {
-                SceneFader.Instance.StartScene();
-                yield return new WaitForSeconds(SceneFader.Instance.FadeSpeed);
-
-            }
+            this.LoadScene(this._currentSceneId);
         }
     }
 }
