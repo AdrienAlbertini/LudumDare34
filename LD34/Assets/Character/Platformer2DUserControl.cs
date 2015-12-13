@@ -118,10 +118,12 @@ using UnityStandardAssets.CrossPlatformInput;
              if (MinDistanceXLeft == 500.0f)
                 MinDistanceXLeft = 0.0f;
              MinDistanceX =  MinDistanceXLeft + MinDistanceXRight;
-             Debug.Log(MinDistanceX);
-             if (MinDistanceX >= Size + 0.1)
+             if (MinDistanceX < 0)
                 return false;
-             else
+             Debug.Log(MinDistanceX + "-----" +  0.1  + "   " +  IsPLayerA);
+             if (MinDistanceX == 0 || MinDistanceX > 1f)
                 return true;
+             else
+                return false;
             }   
     }
