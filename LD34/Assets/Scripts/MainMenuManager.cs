@@ -6,6 +6,7 @@ public class MainMenuManager : MonoBehaviour
 {
     public GameObject holder;
     public GameObject selectLvl;
+    public bool isAllLevels = false;
     // Use this for initialization
     void Start()
     {
@@ -35,9 +36,19 @@ public class MainMenuManager : MonoBehaviour
         this.selectLvl.SetActive(true);
 
         //GETCHILD 0 = backbutton
-        for (int i = 0; i < SaveManager.data.levelID; i++)
+        if (this.isAllLevels == true)
         {
-            this.selectLvl.transform.GetChild(i + 1).GetComponent<Button>().interactable = true;
+            Button[] buttons = this.selectLvl.transform.GetComponentsInChildren<Button>();
+
+            for (int i = 0; i < buttons.Length; ++i)
+                buttons[i].interactable = true;
+        }
+        else
+        {
+            for (int i = 0; i < SaveManager.data.levelID; i++)
+            {
+                this.selectLvl.transform.GetChild(i + 1).GetComponent<Button>().interactable = true;
+            }
         }
     }
 
