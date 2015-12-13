@@ -2,14 +2,14 @@ version: 2
 importPivots: 1
 tpsheetFileNames:
 - Assets/codeandweb.com/Example/SpriteSheet/sprites.tpsheet
-- Assets/Textures/Character/MEC DROITE.tpsheet
-- Assets/Textures/Character/MEC GAUCHE.tpsheet
+- Assets/Textures/Character/AILE MEC GAUCHE.tpsheet
+- Assets/Textures/Character/AILE MEC DROITE.tpsheet
 - Assets/Textures/Character/AILE MEUF DROITE.tpsheet
 - Assets/Textures/Character/AILE MEUF GAUCHE.tpsheet
 textureFileNames:
 - Assets/codeandweb.com/Example/SpriteSheet/sprites.png
-- Assets/Textures/Character/MEC DROITE.png
-- Assets/Textures/Character/MEC GAUCHE.png
+- Assets/Textures/Character/AILE MEC GAUCHE.png
+- Assets/Textures/Character/AILE MEC DROITE.png
 - Assets/Textures/Character/AILE MEUF DROITE.png
 - Assets/Textures/Character/AILE MEUF GAUCHE.png
 normalmapFileNames:
