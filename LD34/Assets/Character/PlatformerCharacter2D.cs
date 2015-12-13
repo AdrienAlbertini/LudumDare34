@@ -49,25 +49,39 @@ namespace UnityStandardAssets._2D
             m_LeftCollide = false;
             m_RightCollide = false;
 
+            bool playerOnSide = false;
+
             RaycastHit2D[] collidersLeftTop = Physics2D.RaycastAll(m_TopCheck.position, (this.transform.right * -1), 0.5f * this.transform.localScale.x + 0.05f, m_WhatIsGround);
             for (int i = 0; i < collidersLeftTop.Length; i++)
             {
                 if (collidersLeftTop[i].transform.gameObject != gameObject)
+                {
                     m_LeftCollide = true;
+                    if (collidersLeftTop[i].transform.gameObject.transform.tag.Equals("Player"))
+                        playerOnSide = true;
+                }
             }
 
             RaycastHit2D[] collidersLeftBottom = Physics2D.RaycastAll(m_DownCheck.position, (this.transform.right * -1), 0.5f * this.transform.localScale.x + 0.05f, m_WhatIsGround);
             for (int i = 0; i < collidersLeftBottom.Length; i++)
             {
                 if (collidersLeftBottom[i].transform.gameObject != gameObject)
+                {
                     m_LeftCollide = true;
+                    if (collidersLeftBottom[i].transform.gameObject.transform.tag.Equals("Player"))
+                        playerOnSide = true;
+                }
             }
 
             RaycastHit2D[] collidersRightTop = Physics2D.RaycastAll(m_TopCheck.position, (this.transform.right), 0.5f * this.transform.localScale.x + 0.05f, m_WhatIsGround);
             for (int i = 0; i < collidersRightTop.Length; i++)
             {
                 if (collidersRightTop[i].transform.gameObject != gameObject)
+                {
                     m_RightCollide = true;
+                    if (collidersRightTop[i].transform.gameObject.transform.tag.Equals("Player"))
+                        playerOnSide = true;
+                }
             }
 
             Debug.DrawRay(m_DownCheck.position, this.transform.right * 0.51f * this.transform.localScale.x, Color.white, 0.1f);
@@ -77,6 +91,8 @@ namespace UnityStandardAssets._2D
                 if (collidersRightBottom[i].transform.gameObject != gameObject)
                 {
                     m_RightCollide = true;
+                    if (collidersRightBottom[i].transform.gameObject.transform.tag.Equals("Player"))
+                        playerOnSide = true;
                 }
             }
 
@@ -94,6 +110,8 @@ namespace UnityStandardAssets._2D
                         m_Grounded = true;
                         if (colliders[i].transform.gameObject.transform.tag == "Player")
                         {
+                            if (playerOnSide)
+                                m_Grounded = false;
                             m_transferForce = true;
                             m_PLayertotransfer = colliders[i].transform.gameObject;
                         }
