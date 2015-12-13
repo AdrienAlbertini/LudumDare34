@@ -53,16 +53,12 @@ namespace UnityStandardAssets._2D
             m_LeftCollide = false;
             m_RightCollide = false;
 
-            bool playerOnSide = false;
-
             RaycastHit2D[] collidersLeftTop = Physics2D.RaycastAll(m_TopCheck.position, (this.transform.right * -1), 0.5f * this.transform.localScale.x + 0.05f, m_WhatIsGround);
             for (int i = 0; i < collidersLeftTop.Length; i++)
             {
                 if (collidersLeftTop[i].transform.gameObject != gameObject)
                 {
                     m_LeftCollide = true;
-                    if (collidersLeftTop[i].transform.gameObject.transform.tag.Equals("Player"))
-                        playerOnSide = true;
                 }
             }
 
@@ -72,8 +68,6 @@ namespace UnityStandardAssets._2D
                 if (collidersLeftBottom[i].transform.gameObject != gameObject)
                 {
                     m_LeftCollide = true;
-                    if (collidersLeftBottom[i].transform.gameObject.transform.tag.Equals("Player"))
-                        playerOnSide = true;
                 }
             }
 
@@ -83,8 +77,6 @@ namespace UnityStandardAssets._2D
                 if (collidersRightTop[i].transform.gameObject != gameObject)
                 {
                     m_RightCollide = true;
-                    if (collidersRightTop[i].transform.gameObject.transform.tag.Equals("Player"))
-                        playerOnSide = true;
                 }
             }
 
@@ -95,8 +87,6 @@ namespace UnityStandardAssets._2D
                 if (collidersRightBottom[i].transform.gameObject != gameObject)
                 {
                     m_RightCollide = true;
-                    if (collidersRightBottom[i].transform.gameObject.transform.tag.Equals("Player"))
-                        playerOnSide = true;
                 }
             }
 
@@ -114,8 +104,6 @@ namespace UnityStandardAssets._2D
                         m_Grounded = true;
                         if (colliders[i].transform.gameObject.transform.tag == "Player")
                         {
-                            if (playerOnSide)
-                                m_Grounded = false;
                             m_transferForce = true;
                             m_PLayertotransfer = colliders[i].transform.gameObject;
                         }
@@ -123,12 +111,11 @@ namespace UnityStandardAssets._2D
                 }
             }
 
-            if (m_transferForce)
+            if (m_transferForce && !_kenTransfer)
             {
                 Vector2 vel = m_PLayertotransfer.GetComponent<Rigidbody2D>().velocity;
                 Vector2 _vel = this.m_Rigidbody2D.velocity;
-                _vel.x += vel.x;
-                this.m_Rigidbody2D.velocity = _vel;
+                this.m_Rigidbody2D.velocity = vel;
             }
             // m_Anim.SetBool("Ground", m_Grounded);
 
@@ -136,7 +123,8 @@ namespace UnityStandardAssets._2D
             // m_Anim.SetFloat("vSpeed", m_Rigidbody2D.velocity.y);
         }
 
-
+        private bool _kenTransfer = true;
+        
         public void Move(float move, bool crouch, bool jump)
         {
             if (m_Grounded)
@@ -145,9 +133,13 @@ namespace UnityStandardAssets._2D
                 this.RightWing.SetBool("Jump", false);
             }
             if (m_LeftCollide == true && move < 0.0f)
+            {
                 move = 0.0f;
+            }
             if (m_RightCollide == true && move > 0.0f)
+            {
                 move = 0.0f;
+            }
 
             //only control the player if grounded or airControl is turned on
             if (m_Grounded || m_AirControl)
@@ -180,6 +172,15 @@ namespace UnityStandardAssets._2D
                     velocityY = m_MaxJumpVelocity;
                 tmp.y = velocityY;
                 m_Rigidbody2D.velocity = tmp;
+            }
+
+            if (move == 0)
+            {
+                _kenTransfer = false;
+            }
+            else
+            {
+                _kenTransfer = true;
             }
         }
 
