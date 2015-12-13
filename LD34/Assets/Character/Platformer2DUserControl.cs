@@ -37,7 +37,7 @@ public class Platformer2DUserControl : MonoBehaviour
         }
         else
         {
-            this.transform.localScale = new Vector3(MainController.SizePLayerB, MainController.SizePLayerB, MainController.SizePLayerB);
+            this.transform.localScale = new Vector3(MainController.SizePlayerB, MainController.SizePlayerB, MainController.SizePlayerB);
         }
         bool crouch = Input.GetKey(KeyCode.LeftControl);
         float h = 0.0f;
@@ -58,7 +58,7 @@ public class Platformer2DUserControl : MonoBehaviour
         {
             Jump = true;
         }
-        else if (v < 0)
+        if (v < 0)
         {
             Grow = true;
         }
@@ -89,7 +89,7 @@ public class Platformer2DUserControl : MonoBehaviour
         }
         else
         {
-            Size = MainController.SizePLayerB;
+            Size = MainController.SizePlayerB;
         }
 
 
