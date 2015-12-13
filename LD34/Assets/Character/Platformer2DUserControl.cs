@@ -55,11 +55,12 @@ using UnityStandardAssets.CrossPlatformInput;
             }
             bool Jump = false;
             bool Grow = false;
-            if (v > 0)
+            if (v > 0.3)
             {
+                Debug.Log("Jumping " + v);
                 Jump = true;
             }
-            else if (v < 0)
+            else if (v < -0.3)
             {
                 Grow = true;
             }
@@ -145,15 +146,15 @@ using UnityStandardAssets.CrossPlatformInput;
                      }
              }
              
-             if (MinDistanceYBottom == 500.0f)
+          /*   if (MinDistanceYBottom == 500.0f)
                 MinDistanceYBottom = -1.0f;
              if (MinDistanceYTop == 500.0f)
                 MinDistanceYTop = -1.0f;
-             
-             if (MinDistanceXRight == 500.0f)
+            */ 
+            /* if (MinDistanceXRight == 500.0f)
                 MinDistanceXRight = -1.0f;
              if (MinDistanceXLeft == 500.0f)
-                MinDistanceXLeft = -1.0f;
+                MinDistanceXLeft = -1.0f;*/
              MinDistanceY = MinDistanceYBottom + MinDistanceYTop;
              MinDistanceX =  MinDistanceXLeft + MinDistanceXRight;
              if (MinDistanceX < 0)
@@ -162,6 +163,8 @@ using UnityStandardAssets.CrossPlatformInput;
                 ret =  false;
              else if (MinDistanceX > 0.1f)
                 ret =  true;
+             else if (MinDistanceX >= 500.0f)
+                ret = true;
              else
                 ret =  false;
              if (ret == false)
@@ -186,6 +189,8 @@ using UnityStandardAssets.CrossPlatformInput;
                 ret2 =  false;
              else if (MinDistanceY > 0.1f)
                 ret2 =  true;
+             else if (MinDistanceY >= 500.0f)
+                ret = true;
              else
                 ret2 =  false;
              if (ret == true && ret2 == true)

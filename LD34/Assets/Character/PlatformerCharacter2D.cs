@@ -11,13 +11,14 @@ namespace UnityStandardAssets._2D
         [Range(0, 1)] [SerializeField] private float m_CrouchSpeed = .36f;  // Amount of maxSpeed applied to crouching movement. 1 = 100%
         [SerializeField] private bool m_AirControl = false;                 // Whether or not a player can steer while jumping;
         [SerializeField] private LayerMask m_WhatIsGround;                  // A mask determining what is ground to the character
-        const float k_GroundedRadius = .1f; // Radius of the overlap circle to determine if grounded
+        const float k_GroundedRadius = .05f; // Radius of the overlap circle to determine if grounded
         private bool m_Grounded;            // Whether or not the player is grounded.
         private bool m_LeftCollide;
         private bool m_RightCollide;
         public Transform[] m_GroundCheck;   // A position marking where to check for ceilings
         private Transform m_TopCheck;   // A position marking where to check for ceilings
         private Transform m_DownCheck;   // A position marking where to check for ceilings
+        private bool JumpstateLastFrame = false;
         
         const float k_CeilingRadius = .01f; // Radius of the overlap circle to determine if the player can stand up
        // private Animator m_Anim;            // Reference to the player's animator component.
@@ -110,7 +111,6 @@ namespace UnityStandardAssets._2D
 
         public void Move(float move, bool crouch, bool jump)
         {
-
             if (m_LeftCollide == true && move < 0.0f)
                 move = 0.0f;
             if (m_RightCollide == true && move > 0.0f)
@@ -143,7 +143,7 @@ namespace UnityStandardAssets._2D
                 }
             }
             // If the player should jump...
-            if (m_Grounded && jump)
+            if (m_Grounded && jump && JumpstateLastFrame == false)
             {
                 // Add a vertical force to the player.
                 m_Grounded = false;
@@ -156,6 +156,7 @@ namespace UnityStandardAssets._2D
               tmp.y = velocityY;
               m_Rigidbody2D.velocity = tmp;
             }
+                        JumpstateLastFrame = jump;
         }
 
        
