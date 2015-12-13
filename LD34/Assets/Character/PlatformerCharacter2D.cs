@@ -49,35 +49,6 @@ namespace UnityStandardAssets._2D
             m_LeftCollide = false;
             m_RightCollide = false;
 
-            // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
-            // This can be done using layers instead but Sample Assets will not overwrite your project settings.
-            bool m_transferForce = false;
-            GameObject m_PLayertotransfer = null;
-            foreach (Transform tra in m_GroundCheck)
-            {
-                RaycastHit2D[] colliders = Physics2D.RaycastAll(tra.position, (this.transform.up * -1), k_GroundedRadius, m_WhatIsGround);
-                for (int i = 0; i < colliders.Length; i++)
-                {
-                    if (colliders[i].transform.gameObject != gameObject)
-                    {
-                        m_Grounded = true;
-                        if (colliders[i].transform.gameObject.transform.tag == "Player")
-                        {
-                            m_transferForce = true;
-                            m_PLayertotransfer = colliders[i].transform.gameObject;
-                        }
-                    }
-                }
-            }
-
-            if (m_transferForce)
-            {
-                Vector2 vel = m_PLayertotransfer.GetComponent<Rigidbody2D>().velocity;
-                Vector2 _vel = this.m_Rigidbody2D.velocity;
-                _vel.x += vel.x;
-                this.m_Rigidbody2D.velocity = _vel;
-            }
-
             RaycastHit2D[] collidersLeftTop = Physics2D.RaycastAll(m_TopCheck.position, (this.transform.right * -1), 0.5f * this.transform.localScale.x + 0.05f, m_WhatIsGround);
             for (int i = 0; i < collidersLeftTop.Length; i++)
             {
@@ -107,6 +78,35 @@ namespace UnityStandardAssets._2D
                 {
                     m_RightCollide = true;
                 }
+            }
+
+            // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
+            // This can be done using layers instead but Sample Assets will not overwrite your project settings.
+            bool m_transferForce = false;
+            GameObject m_PLayertotransfer = null;
+            foreach (Transform tra in m_GroundCheck)
+            {
+                RaycastHit2D[] colliders = Physics2D.RaycastAll(tra.position, (this.transform.up * -1), k_GroundedRadius, m_WhatIsGround);
+                for (int i = 0; i < colliders.Length; i++)
+                {
+                    if (colliders[i].transform.gameObject != gameObject)
+                    {
+                        m_Grounded = true;
+                        if (colliders[i].transform.gameObject.transform.tag == "Player")
+                        {
+                            m_transferForce = true;
+                            m_PLayertotransfer = colliders[i].transform.gameObject;
+                        }
+                    }
+                }
+            }
+
+            if (m_transferForce)
+            {
+                Vector2 vel = m_PLayertotransfer.GetComponent<Rigidbody2D>().velocity;
+                Vector2 _vel = this.m_Rigidbody2D.velocity;
+                _vel.x += vel.x;
+                this.m_Rigidbody2D.velocity = _vel;
             }
             // m_Anim.SetBool("Ground", m_Grounded);
 
