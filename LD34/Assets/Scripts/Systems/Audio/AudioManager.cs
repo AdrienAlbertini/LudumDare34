@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class AudioManager : SingletonBehaviour<MonoBehaviour>
+public class AudioManager : SingletonBehaviour<AudioManager>
 {
     public List<AudioPair> audioList = new List<AudioPair>();
     private AudioSource _audioSource;
@@ -19,4 +19,15 @@ public class AudioManager : SingletonBehaviour<MonoBehaviour>
 
     }
 
+    public void PlaySound(string soundName, float volumeScale = 1.0f)
+    {
+       for (int i = 0; i < this.audioList.Count; ++i)
+        {
+            if (this.audioList[i].audioName == soundName)
+            {
+                this._audioSource.PlayOneShot(this.audioList[i].audioClip, volumeScale);
+                return;
+            }
+        }
+    }
 }

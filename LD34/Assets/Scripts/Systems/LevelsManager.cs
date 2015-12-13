@@ -29,8 +29,9 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
         this._isLoading = false;
     }
 
-    private IEnumerator _StartLoad(string scene, bool fade)
+    private IEnumerator _StartLoad(string scene, bool fade, float timer = 0.0f)
     {
+        yield return new WaitForSeconds(timer);
         this._isLoading = true;
         if (fade)
         {
@@ -57,27 +58,27 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
         }
     }
 
-    public void LoadScene(int sceneId, bool fade = true)
+    public void LoadScene(int sceneId, bool fade = true, float timer = 0.0f)
     {
         if (sceneId >= 0 && sceneId < this.scenes.Count)
         {
             this._currentSceneId = sceneId;
-            StartCoroutine(this._StartLoad(this.scenes[sceneId], fade));
+            StartCoroutine(this._StartLoad(this.scenes[sceneId], fade, timer));
         }
     }
 
-    public void LoadScene(string scene, bool fade = true)
+    public void LoadScene(string scene, bool fade = true, float timer = 0.0f)
     {
         if (this.scenes.Contains(scene))
         {
             this._currentSceneId = this.scenes.IndexOf(scene);
-            StartCoroutine(this._StartLoad(scene, fade));
+            StartCoroutine(this._StartLoad(scene, fade, timer));
         }
     }
 
-    public void ReloadScene()
+    public void ReloadScene(bool fade = true, float timer = 0.0f)
     {
-        this.LoadScene(this._currentSceneId);
+        this.LoadScene(this._currentSceneId, true, timer);
     }
 
     public void SwitchToNextScene()
