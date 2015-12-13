@@ -4,16 +4,27 @@ using System.Collections;
 public class PlayerSpawner : MonoBehaviour
 {
 
-    [SerializeField]
+    [SerializeField] 
     private GameObject PlayerPrefab;
-
+    [SerializeField]
+    private GameObject SpawnA;
+    [SerializeField]
+    private GameObject SpawnB;
+    private GameObject PlayerA;
+    private GameObject PlayerB;
     void Awake()
     {
+
         if (this.PlayerPrefab == null)
             Debug.LogError("No player prefab selected");
         else
         {
-            Instantiate(this.PlayerPrefab, this.transform.position, Quaternion.identity);
+            GameObject item = Instantiate(this.PlayerPrefab, this.transform.position, Quaternion.identity) as GameObject;
+            PlayerA = item.transform.FindChild("CharacterPLayerA(Clone)").gameObject;
+            PlayerB = item.transform.FindChild("CharacterPLayerB(Clone)").gameObject;
+            PlayerA.transform.position = SpawnA.transform.position;
+            PlayerB.transform.position = SpawnB.transform.position;
+
             Custom.Inputs.InputsManager.Instance.BindReceiveSingleAction(Custom.Inputs.Actions.ActionType.Restart, this.OnRestart);
         }
     }
