@@ -8,8 +8,13 @@ using UnityStandardAssets.CrossPlatformInput;
     {
         [SerializeField] bool IsPLayerA = false;
         [SerializeField] CharacterManager MainController;
+        [SerializeField] Transform[] RightCheck;
+        [SerializeField] Transform[] LefttCheck;
+        [SerializeField] Transform[] BottomtCheck;
+        [SerializeField] Transform[] TopCheck;
         private PlatformerCharacter2D m_Character;
         private bool m_Jump;
+        
 
 
         private void Awake()
@@ -65,8 +70,60 @@ using UnityStandardAssets.CrossPlatformInput;
         }
 
 
-        private void FixedUpdate()
+        public bool calculateIfIcanGrow()
         {
-            // Read the inputs.
-        }
+         bool ret = false;
+         float MinDistanceXRight = 500.0f;
+         float MinDistanceXLeft = 500.0f;
+         float MinDistanceX = 0.0f;
+         float Size = 0.0f;
+         
+         
+            if (IsPLayerA)
+            {
+                Size = MainController.SizePlayerA;
+            }
+            else
+            {
+                Size = MainController.SizePLayerB;
+            }
+         
+         
+         foreach (Transform tra in RightCheck)
+            {
+                 RaycastHit2D[] collidersLeftTop = Physics2D.RaycastAll(tra.transform.position, (this.transform.right), 3.0f);
+                 for (int i = 0; i < collidersLeftTop.Length; i++)
+                 {
+                         if (collidersLeftTop[i].transform.gameObject != gameObject && collidersLeftTop[i].transform.gameObject.transform.tag != "Player")
+                        {
+                            if (MinDistanceXRight > collidersLeftTop[i].distance)
+                                MinDistanceXRight = collidersLeftTop[i].distance;
+                         }
+                     }
+             }
+            foreach (Transform tra in LefttCheck)
+            {
+                 RaycastHit2D[] collidersLeftTop = Physics2D.RaycastAll(tra.transform.position, (this.transform.right * -1), 3.0f);
+                 for (int i = 0; i < collidersLeftTop.Length; i++)
+                 {
+                         if (collidersLeftTop[i].transform.gameObject != gameObject && collidersLeftTop[i].transform.gameObject.transform.tag != "Player")
+                        {
+                            if (MinDistanceXLeft > collidersLeftTop[i].distance)
+                                MinDistanceXLeft = collidersLeftTop[i].distance;
+                         }
+                     }
+             }
+             if (MinDistanceXRight == 500.0f)
+                MinDistanceXRight = 0.0f;
+             if (MinDistanceXLeft == 500.0f)
+                MinDistanceXLeft = 0.0f;
+             MinDistanceX =  MinDistanceXLeft + MinDistanceXRight;
+             if (MinDistanceX < 0)
+                return false;
+             Debug.Log(MinDistanceX + "-----" +  0.1  + "   " +  IsPLayerA);
+             if (MinDistanceX == 0 || MinDistanceX > 1f)
+                return true;
+             else
+                return false;
+            }   
     }
