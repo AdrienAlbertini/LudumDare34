@@ -39,9 +39,12 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
                 yield return new WaitForFixedUpdate();
             //yield return new WaitForSeconds(SceneFader.Instance.fadeSpeed);
         }
+        Debug.Log("START LOAD SCENE: scene");
         SceneManager.LoadScene(scene, LoadSceneMode.Single);
+        Debug.Log("LOAD SCENE: scene");
         while (this._isLoading)
             yield return new WaitForFixedUpdate();
+        Debug.Log("SCENE LOADED");
         if (fade)
         {
             SceneFader.Instance.StartScene();
