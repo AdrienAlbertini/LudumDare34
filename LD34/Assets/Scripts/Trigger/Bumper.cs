@@ -20,7 +20,7 @@ public class Bumper : MonoBehaviour
         
     }
 
-    void OnCollisionEnter2D(Collision2D coll)
+    void OnTriggerStay2D(Collider2D coll)
     {
         if (!bumperOn)
             return;
@@ -30,10 +30,14 @@ public class Bumper : MonoBehaviour
             Debug.Log("Target no rigid body");
         else
         {
-            Vector2 direction = new Vector2(this.transform.position.x, this.transform.position.y) - body.position;
-            Vector2 force = direction.normalized * -1 * this.Force;
+            //Vector2 direction = new Vector2(this.transform.position.x, this.transform.position.y) - body.position;
+            //Vector2 force = direction.normalized * -1 * this.Force;
 
-            body.AddForce(force, ForceMode2D.Impulse);
+            Vector2 force = new Vector2(0, this.Force);
+
+            body.velocity = force;
+
+            //body.AddForce(force, ForceMode2D.Impulse);
         }
     }
 }
