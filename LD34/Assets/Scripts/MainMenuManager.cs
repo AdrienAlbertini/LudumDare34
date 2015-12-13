@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class MainMenuManager : MonoBehaviour
@@ -32,6 +33,12 @@ public class MainMenuManager : MonoBehaviour
     {
         this.holder.SetActive(false);
         this.selectLvl.SetActive(true);
+
+        //GETCHILD 0 = backbutton
+        for (int i = 0; i < SaveManager.data.levelID; i++)
+        {
+            this.selectLvl.transform.GetChild(i + 1).GetComponent<Button>().interactable = true;
+        }
     }
 
     public void goToLevel(string scene)
