@@ -12,6 +12,14 @@ public class CharacterManager : MonoBehaviour
     public float MinSize = 1.0f;
     public Platformer2DUserControl PlayerA;
     public Platformer2DUserControl PlayerB;
+    public GameObject misterFeathersPrefab;
+    public GameObject ladyFeathersPrefab;
+    public AudioSource audioSource;
+    public AudioClip PlayerAExplosion;
+    public AudioClip PlayerBExplosion;
+    public AudioClip PlayerADeath;
+    public AudioClip PlayerBDeath;
+
     // Use this for initialization
     void Start()
     {
@@ -30,6 +38,25 @@ public class CharacterManager : MonoBehaviour
             this._explosion += Time.deltaTime;
             if (this._explosion > 1.0f)
             {
+                GameObject particles = null;
+                if (this.SizePlayerA == MaxSize)
+                {
+                    particles = GameObject.Instantiate(this.misterFeathersPrefab);
+                    particles.transform.position = this.PlayerA.transform.position;
+                    this.audioSource.PlayOneShot(this.PlayerAExplosion);
+                    this.audioSource.PlayOneShot(this.PlayerADeath);
+                    //   this.PlayerAExplosion.Play();
+                    GameObject.Destroy(this.PlayerA.transform.parent.gameObject);
+                }
+                else
+                {
+                    particles = GameObject.Instantiate(this.ladyFeathersPrefab);
+                    particles.transform.position = this.PlayerB.transform.position;
+                    this.audioSource.PlayOneShot(this.PlayerBExplosion);
+                    this.audioSource.PlayOneShot(this.PlayerBDeath);
+                    //  this.PlayerBExplosion.Play();
+                    GameObject.Destroy(this.PlayerB.transform.parent.gameObject);
+                }
                 Debug.Log("Explosion!");
             }
         }

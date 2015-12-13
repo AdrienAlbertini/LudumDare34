@@ -7,6 +7,7 @@ public class MainMenuManager : MonoBehaviour
     public GameObject holder;
     public GameObject selectLvl;
     public bool isAllLevels = false;
+    public InputField lvlLoaderField;
     // Use this for initialization
     void Start()
     {
@@ -50,6 +51,11 @@ public class MainMenuManager : MonoBehaviour
                 this.selectLvl.transform.GetChild(i + 1).GetComponent<Button>().interactable = true;
             }
         }
+    }
+
+    public void LvlLoaderEndEdit()
+    {
+        this.goToLevel(this.lvlLoaderField.text);
     }
 
     public void goToLevel(string scene)
