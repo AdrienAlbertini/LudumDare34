@@ -9,6 +9,8 @@ public class ToggleDoor : MonoBehaviour, PressurePlateListener
     public float speed = 1.0f;
     public float height = 3.0f;
     public dir direction = dir.UP;
+    public int nbNeeded = 1;
+    private int nbPressed = 0;
 
     private float _step;
     private Vector3 _initialPosition;
@@ -26,12 +28,16 @@ public class ToggleDoor : MonoBehaviour, PressurePlateListener
 
     public void OnPressurePlateTriggerOut(PressurePlate sender)
     {
-        throw new NotImplementedException();
+       //StartCoroutine(this.MoveDoor(_initialPosition));
     }
 
     public void OnPressurePlateTriggerIn(PressurePlate sender)
     {
         Vector3 vecDir = Vector3.zero;
+        nbPressed++;
+
+        if (!(nbPressed == nbNeeded))
+            return;
 
         switch (this.direction)
         {
