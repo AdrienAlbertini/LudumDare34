@@ -20,8 +20,11 @@ public class Platformer2DUserControl : MonoBehaviour
     Transform[] TopCheck;
     private PlatformerCharacter2D m_Character;
     private bool canJump = true;
-
-
+    public event EventHandler growStart;
+    public event EventHandler growOver;
+    public bool LastFrameGrowingPushed = false;
+    public bool Grow = false;
+    private bool FirstTimeGrowing = true;
 
     private void Awake()
     {
@@ -53,7 +56,7 @@ public class Platformer2DUserControl : MonoBehaviour
             v = CrossPlatformInputManager.GetAxisRaw("VerticalB");
         }
         bool Jump = false;
-        bool Grow = false;
+        Grow = false;
         if (v > 0)
         {
             Jump = true;
@@ -62,7 +65,20 @@ public class Platformer2DUserControl : MonoBehaviour
         {
             Grow = true;
         }
-        MainController.Grow(Grow, IsPLayerA);
+        bool GrowingPushed = false;
+        GrowingPushed = MainController.Grow(Grow, IsPLayerA);
+        if (LastFrameGrowingPushed == false && GrowingPushed == true)
+        {
+            this.growStart(this, EventArgs.Empty);
+            //TODO Start song;
+        }
+
+        if (LastFrameGrowingPushed == true && GrowingPushed == false)
+        {
+            this.growOver(this, EventArgs.Empty);
+            //TODO Stop le son de gonflement;
+        }
+        LastFrameGrowingPushed = GrowingPushed;
         // Pass all parameters to the character control script.
         if (canJump == false)
             Jump = false;
@@ -95,50 +111,62 @@ public class Platformer2DUserControl : MonoBehaviour
 
         foreach (Transform tra in RightCheck)
         {
-            RaycastHit2D[] collidersLeftTop = Physics2D.RaycastAll(tra.transform.position, (this.transform.right), 3.0f);
-            for (int i = 0; i < collidersLeftTop.Length; i++)
+            if (tra != null)
             {
-                if (collidersLeftTop[i].transform.gameObject != gameObject && collidersLeftTop[i].transform.gameObject.transform.tag != "Player")
+                RaycastHit2D[] collidersLeftTop = Physics2D.RaycastAll(tra.transform.position, (this.transform.right), 3.0f);
+                for (int i = 0; i < collidersLeftTop.Length; i++)
                 {
-                    if (MinDistanceXRight > collidersLeftTop[i].distance)
-                        MinDistanceXRight = collidersLeftTop[i].distance;
+                    if (collidersLeftTop[i].transform.gameObject != gameObject && collidersLeftTop[i].transform.gameObject.transform.tag != "Player")
+                    {
+                        if (MinDistanceXRight > collidersLeftTop[i].distance)
+                            MinDistanceXRight = collidersLeftTop[i].distance;
+                    }
                 }
             }
         }
         foreach (Transform tra in LefttCheck)
         {
-            RaycastHit2D[] collidersLeftTop = Physics2D.RaycastAll(tra.transform.position, (this.transform.right * -1), 3.0f);
-            for (int i = 0; i < collidersLeftTop.Length; i++)
+            if (tra != null)
             {
-                if (collidersLeftTop[i].transform.gameObject != gameObject && collidersLeftTop[i].transform.gameObject.transform.tag != "Player")
+                RaycastHit2D[] collidersLeftTop = Physics2D.RaycastAll(tra.transform.position, (this.transform.right * -1), 3.0f);
+                for (int i = 0; i < collidersLeftTop.Length; i++)
                 {
-                    if (MinDistanceXLeft > collidersLeftTop[i].distance)
-                        MinDistanceXLeft = collidersLeftTop[i].distance;
+                    if (collidersLeftTop[i].transform.gameObject != gameObject && collidersLeftTop[i].transform.gameObject.transform.tag != "Player")
+                    {
+                        if (MinDistanceXLeft > collidersLeftTop[i].distance)
+                            MinDistanceXLeft = collidersLeftTop[i].distance;
+                    }
                 }
             }
         }
 
         foreach (Transform tra in TopCheck)
         {
-            RaycastHit2D[] collidersLeftTop = Physics2D.RaycastAll(tra.transform.position, (this.transform.up), 3.0f);
-            for (int i = 0; i < collidersLeftTop.Length; i++)
+            if (tra != null)
             {
-                if (collidersLeftTop[i].transform.gameObject != gameObject && collidersLeftTop[i].transform.gameObject.transform.tag != "Player")
+                RaycastHit2D[] collidersLeftTop = Physics2D.RaycastAll(tra.transform.position, (this.transform.up), 3.0f);
+                for (int i = 0; i < collidersLeftTop.Length; i++)
                 {
-                    if (MinDistanceYTop > collidersLeftTop[i].distance)
-                        MinDistanceYTop = collidersLeftTop[i].distance;
+                    if (collidersLeftTop[i].transform.gameObject != gameObject && collidersLeftTop[i].transform.gameObject.transform.tag != "Player")
+                    {
+                        if (MinDistanceYTop > collidersLeftTop[i].distance)
+                            MinDistanceYTop = collidersLeftTop[i].distance;
+                    }
                 }
             }
         }
         foreach (Transform tra in BottomtCheck)
         {
-            RaycastHit2D[] collidersLeftTop = Physics2D.RaycastAll(tra.transform.position, (this.transform.up * -1), 3.0f);
-            for (int i = 0; i < collidersLeftTop.Length; i++)
+            if (tra != null)
             {
-                if (collidersLeftTop[i].transform.gameObject != gameObject && collidersLeftTop[i].transform.gameObject.transform.tag != "Player")
+                RaycastHit2D[] collidersLeftTop = Physics2D.RaycastAll(tra.transform.position, (this.transform.up * -1), 3.0f);
+                for (int i = 0; i < collidersLeftTop.Length; i++)
                 {
-                    if (MinDistanceYBottom > collidersLeftTop[i].distance)
-                        MinDistanceYBottom = collidersLeftTop[i].distance;
+                    if (collidersLeftTop[i].transform.gameObject != gameObject && collidersLeftTop[i].transform.gameObject.transform.tag != "Player")
+                    {
+                        if (MinDistanceYBottom > collidersLeftTop[i].distance)
+                            MinDistanceYBottom = collidersLeftTop[i].distance;
+                    }
                 }
             }
         }
@@ -175,8 +203,11 @@ public class Platformer2DUserControl : MonoBehaviour
         }
         else
         {
-            m_Character.GetComponent<Rigidbody2D>().gravityScale = 3;
-            canJump = true;
+            if (m_Character != null)
+            {
+                m_Character.GetComponent<Rigidbody2D>().gravityScale = 3;
+                canJump = true;
+            }
         }
 
         bool ret2 = false;

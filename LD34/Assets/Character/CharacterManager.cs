@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class CharacterManager : MonoBehaviour
 {
@@ -12,11 +13,24 @@ public class CharacterManager : MonoBehaviour
     public float MinSize = 1.0f;
     public Platformer2DUserControl PlayerA;
     public Platformer2DUserControl PlayerB;
+    public GameObject misterFeathersPrefab;
+    public GameObject ladyFeathersPrefab;
+    public AudioClip growSound;
+    public AudioClip growLimitSound;
+    private AudioSource _audioSource;
+
     // Use this for initialization
     void Start()
     {
         this.SizePlayerA = ((MaxSize - MinSize) / 2.0f) + MinSize;
         this.SizePlayerB = this.SizePlayerA;
+        this._audioSource = this.GetComponent<AudioSource>();
+        this.PlayerA.growStart += this._OnGrow;
+        this.PlayerA.growOver += this._OnGrowEnd;
+        this.PlayerB.growStart += this._OnGrow;
+        this.PlayerB.growOver += this._OnGrowEnd;
+
+        Debug.Log("PLAY");
     }
 
     private float _explosion = 0;
@@ -27,25 +41,69 @@ public class CharacterManager : MonoBehaviour
     {
         if (this._hasGrown && (this.SizePlayerA == MaxSize || this.SizePlayerB == MaxSize))
         {
+            if (this._explosion <= 0.0f)
+            {
+                this._audioSource.clip = this.growLimitSound;
+                this._audioSource.Play();
+            }
             this._explosion += Time.deltaTime;
             if (this._explosion > 1.0f)
             {
+                GameObject particles = null;
+                if (this.SizePlayerA == MaxSize && PlayerA != null)
+                {
+                    particles = GameObject.Instantiate(this.misterFeathersPrefab);
+                    particles.transform.position = this.PlayerA.transform.position;
+                    AudioManager.Instance.PlaySound("MisterExplosion");
+                    AudioManager.Instance.PlaySound("MisterDeath");
+                    this._audioSource.Stop();
+                    //   this.PlayerAExplosion.Play();
+                    GameObject.Destroy(this.PlayerA.transform.parent.gameObject);
+                    LevelsManager.Instance.ReloadScene(true, 1.0f);
+                }
+                else if (this.SizePlayerB == MaxSize && PlayerB != null)
+                {
+                    particles = GameObject.Instantiate(this.ladyFeathersPrefab);
+                    particles.transform.position = this.PlayerB.transform.position;
+                    AudioManager.Instance.PlaySound("LadyExplosion");
+                    AudioManager.Instance.PlaySound("LadyDeath");
+                    this._audioSource.Stop();
+                    //  this.PlayerBExplosion.Play();
+                    GameObject.Destroy(this.PlayerB.transform.parent.gameObject);
+                    LevelsManager.Instance.ReloadScene(true, 1.0f);
+                }
                 Debug.Log("Explosion!");
             }
         }
         else
+        {
             this._explosion = 0;
+        }
         this._hasGrown = false;
     }
 
-    public void Grow(bool _IsGrowing, bool _IsPlayerA)
+    private void _OnGrow(object sender, EventArgs e)
+    {
+        Debug.Log("OnGrow");
+        this._audioSource.Stop();
+        this._audioSource.clip = this.growSound;
+        this._audioSource.Play();
+    }
+    private void _OnGrowEnd(object sender, EventArgs e)
+    {
+        Debug.Log("OnGrowEnd");
+        if (PlayerA != null && PlayerB != null && PlayerA.Grow == false && PlayerB.Grow == false)
+            this._audioSource.Stop();
+    }
+
+    public bool Grow(bool _IsGrowing, bool _IsPlayerA)
     {
         /*if (_IsGrowing == true)
 		{*/
         if (!_IsPlayerA && !PlayerA.calculateIfIcanGrow())
-            return;
+            return false;
         else if (!PlayerB.calculateIfIcanGrow() && _IsPlayerA)
-            return;
+            return false;
         //	}
         if (SizePlayerA < MinSize || SizePlayerB < MinSize)
         {
@@ -80,6 +138,8 @@ public class CharacterManager : MonoBehaviour
                     SizePlayerB -= 0.1f;
                 }
             }
+            return true;
         }
+        return false;
     }
 }
