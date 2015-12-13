@@ -48,16 +48,16 @@ namespace UnityStandardAssets._2D
             GameObject m_PLayertotransfer = null;
             foreach (Transform tra in m_GroundCheck)
             {
-                 Collider2D[] colliders = Physics2D.OverlapCircleAll(tra.position, k_GroundedRadius, m_WhatIsGround);
+                 RaycastHit2D[] colliders = Physics2D.RaycastAll(tra.position, (this.transform.up * -1), k_GroundedRadius, m_WhatIsGround);
                  for (int i = 0; i < colliders.Length; i++)
                  {
-                     if (colliders[i].gameObject != gameObject)
+                     if (colliders[i].transform.gameObject != gameObject)
                      {
                       m_Grounded = true;
-                      if (colliders[i].gameObject.transform.tag == "Player")
+                      if (colliders[i].transform.gameObject.transform.tag == "Player")
                       {
                           m_transferForce = true;
-                          m_PLayertotransfer = colliders[i].gameObject;
+                          m_PLayertotransfer = colliders[i].transform.gameObject;
                       }
                      }
                  }   

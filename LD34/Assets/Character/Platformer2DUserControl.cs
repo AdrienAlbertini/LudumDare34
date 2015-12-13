@@ -175,7 +175,6 @@ using UnityStandardAssets.CrossPlatformInput;
              }
              else
              {
-                 Debug.Log("Gravity" + "   " + IsPLayerA);
                  m_Character.GetComponent<Rigidbody2D>().gravityScale = 3;
                  canJump = true;
              }
