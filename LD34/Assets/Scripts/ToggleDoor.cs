@@ -6,20 +6,17 @@ public class ToggleDoor : MonoBehaviour, PressurePlateListener
 {
     public enum dir { UP, DOWN, LEFT, RIGHT };
 
-    [SerializeField]
-    public float speed = 3.0f;
-    [SerializeField]
+    public float speed = 1.0f;
     public float height = 3.0f;
-    [SerializeField]
     public dir direction = dir.UP;
 
     private float _step;
     private Vector3 _initialPosition;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         _initialPosition = transform.position;
-        _step = speed * Time.deltaTime;
 	}
 	
 	// Update is called once per frame
@@ -59,19 +56,20 @@ public class ToggleDoor : MonoBehaviour, PressurePlateListener
                     break;
                 }
         }
+        
         Vector3 endPos = transform.position + vecDir;
-        StartCoroutine("MoveDoor", _initialPosition);
+        StartCoroutine(this.MoveDoor(endPos));
     }
 
-    IEnumerator MoveDoor(Vector3 endPos)
+    private IEnumerator MoveDoor(Vector3 endPos)
     {
         float t = 0f;
         Vector3 startPos = transform.position;
-        while (t < 1f)
-        {
-            t += _step;
-            transform.position = Vector3.Slerp(startPos, endPos, t);
-            yield return null;
+        while (Vector3.Distance(startPos, endPos) > 0.0f)
+         {
+            t += speed * Time.deltaTime;
+            transform.position = Vector3.Lerp(startPos, endPos, t);
+            yield return new WaitForEndOfFrame();
         }
     }
 }
