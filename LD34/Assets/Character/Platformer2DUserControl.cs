@@ -34,6 +34,8 @@ public class Platformer2DUserControl : MonoBehaviour
 
     private void Update()
     {
+        if (Time.timeScale == 0)
+            return;
         if (IsPLayerA)
         {
             this.transform.localScale = new Vector3(MainController.SizePlayerA, MainController.SizePlayerA, MainController.SizePlayerA);
