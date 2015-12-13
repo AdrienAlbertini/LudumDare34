@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class ToggleDoor : MonoBehaviour, PressurePlateListener
 {
@@ -26,38 +27,12 @@ public class ToggleDoor : MonoBehaviour, PressurePlateListener
 	
 	}
 
-    public void OnPressurePlateTriggered(PressurePlate sender)
+    public void OnPressurePlateTriggerOut(PressurePlate sender)
     {
-        Vector3 vecDir = Vector3.zero;
-
-        switch (this.direction)
-        {
-            case dir.UP:
-                {
-                    vecDir = new Vector3(0f, height, 0f);
-                    break;
-                }
-            case dir.DOWN:
-                {
-                    vecDir = new Vector3(0f, -height, 0f);
-                    break;
-                }
-            case dir.LEFT:
-                {
-                    vecDir = new Vector3(-height, 0f, 0f);
-                    break;
-                }
-            case dir.RIGHT:
-                {
-                    vecDir = new Vector3(height, 0f, 0f);
-                    break;
-                }
-        }
-        Vector3 endPos = transform.position + vecDir;
-        StartCoroutine("MoveDoor", _initialPosition);
+        throw new NotImplementedException();
     }
 
-    public void OnPressurePlateTriggered(PressurePlate sender)
+    public void OnPressurePlateTriggerIn(PressurePlate sender)
     {
         Vector3 vecDir = Vector3.zero;
 
