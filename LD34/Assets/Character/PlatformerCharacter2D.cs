@@ -52,21 +52,21 @@ namespace UnityStandardAssets._2D
                     m_Grounded = true;
             }
             
-            RaycastHit2D[] collidersLeftTop = Physics2D.RaycastAll(m_TopCheck.position, (this.transform.right * -1), 0.5f * this.transform.localScale.x + 0.05f);
+            RaycastHit2D[] collidersLeftTop = Physics2D.RaycastAll(m_TopCheck.position, (this.transform.right * -1), 0.5f * this.transform.localScale.x + 0.05f, m_WhatIsGround);
             for (int i = 0; i < collidersLeftTop.Length; i++)
             {
                 if (collidersLeftTop[i].transform.gameObject != gameObject)
                     m_LeftCollide = true;
             }
             
-            RaycastHit2D[] collidersLeftBottom = Physics2D.RaycastAll(m_DownCheck.position, (this.transform.right * -1), 0.5f * this.transform.localScale.x +  0.05f);
+            RaycastHit2D[] collidersLeftBottom = Physics2D.RaycastAll(m_DownCheck.position, (this.transform.right * -1), 0.5f * this.transform.localScale.x +  0.05f, m_WhatIsGround);
             for (int i = 0; i < collidersLeftBottom.Length; i++)
             {
                 if (collidersLeftBottom[i].transform.gameObject != gameObject)
                     m_LeftCollide = true;
             }
             
-            RaycastHit2D[] collidersRightTop = Physics2D.RaycastAll(m_TopCheck.position, (this.transform.right), 0.5f * this.transform.localScale.x +  0.05f);
+            RaycastHit2D[] collidersRightTop = Physics2D.RaycastAll(m_TopCheck.position, (this.transform.right), 0.5f * this.transform.localScale.x +  0.05f, m_WhatIsGround);
             for (int i = 0; i < collidersRightTop.Length; i++)
             {
                 if (collidersRightTop[i].transform.gameObject != gameObject)
@@ -74,7 +74,7 @@ namespace UnityStandardAssets._2D
             }
             
             Debug.DrawRay(m_DownCheck.position, this.transform.right * 0.51f * this.transform.localScale.x, Color.white, 0.1f);
-            RaycastHit2D[] collidersRightBottom = Physics2D.RaycastAll(m_DownCheck.position, (this.transform.right), 0.5f * this.transform.localScale.x + 0.05f);
+            RaycastHit2D[] collidersRightBottom = Physics2D.RaycastAll(m_DownCheck.position, (this.transform.right), 0.5f * this.transform.localScale.x + 0.05f, m_WhatIsGround);
             for (int i = 0; i < collidersRightBottom.Length; i++)
             {
                 if (collidersRightBottom[i].transform.gameObject != gameObject)
@@ -91,6 +91,7 @@ namespace UnityStandardAssets._2D
 
         public void Move(float move, bool crouch, bool jump)
         {
+
             if (m_LeftCollide == true && move < 0.0f)
                 move = 0.0f;
             if (m_RightCollide == true && move > 0.0f)
@@ -115,7 +116,8 @@ namespace UnityStandardAssets._2D
                 move = (crouch ? move*m_CrouchSpeed : move);
 
                 // The Speed animator parameter is set to the absolute value of the horizontal input.
-              ///  m_Anim.SetFloat("Speed", Mathf.Abs(move));
+                ///  m_Anim.SetFloat("Speed", Mathf.Abs(move));
+
 
                 // Move the character
                 m_Rigidbody2D.velocity = new Vector2(move*m_MaxSpeed, m_Rigidbody2D.velocity.y);

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class ToggleBumper : MonoBehaviour, PressurePlateListener
 {
@@ -13,8 +14,13 @@ public class ToggleBumper : MonoBehaviour, PressurePlateListener
 	
 	}
 
-    public void OnPressurePlateTriggered(PressurePlate sender)
+    public void OnPressurePlateTriggerIn(PressurePlate sender)
     {
         this.GetComponent<Bumper>().bumperOn = true;
+    }
+
+    public void OnPressurePlateTriggerOut(PressurePlate sender)
+    {
+        throw new NotImplementedException();
     }
 }
