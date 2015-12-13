@@ -1,16 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CharacterManager : MonoBehaviour {
+public class CharacterManager : MonoBehaviour
+{
 
+    [HideInInspector]
 	public float SizePlayerA;
-	public float SizePLayerB;
+    [HideInInspector]
+    public float SizePLayerB;
 	public float MaxSize = 10.0f;
+    public float MinSize = 1.0f;
 	public Platformer2DUserControl PlayerA;
 	public Platformer2DUserControl PlayerB;
 	// Use this for initialization
-	void Start () {
-	
+	void Start ()
+    {
+        this.SizePlayerA = ((MaxSize - MinSize) / 2.0f) + MinSize;
+        this.SizePLayerB = this.SizePlayerA;
 	}
 	
 	// Update is called once per frame
@@ -27,18 +33,18 @@ public class CharacterManager : MonoBehaviour {
 			else if (!PlayerB.calculateIfIcanGrow() && _IsPlayerA)
 				return;
 	//	}
-    if (SizePlayerA < 1 || SizePLayerB < 1)
+    if (SizePlayerA < MinSize || SizePLayerB < MinSize)
         {
             Debug.LogWarning("Size is " + SizePlayerA + " " + SizePLayerB);
-        }
+        }   
 		if (_IsGrowing == true)
 		{
 			if (_IsPlayerA)
 			{
-                if (SizePlayerA - 0.1f <= 1.0f)
+                if (SizePlayerA - 0.1f <= MinSize)
                 {
                     SizePLayerB = MaxSize;
-                    SizePlayerA = 1.0f;
+                    SizePlayerA = MinSize;
                 }
                 else
                 {
@@ -48,10 +54,10 @@ public class CharacterManager : MonoBehaviour {
 			}
 			else
 			{
-                if (SizePLayerB - 0.1 <= 1.0f)
+                if (SizePLayerB - 0.1 <= MinSize)
                 {
                     SizePlayerA = MaxSize;
-                    SizePLayerB = 1.0f;
+                    SizePLayerB = MinSize;
                 }
                 else
                 {
