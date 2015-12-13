@@ -7,7 +7,7 @@ using UnityStandardAssets.CrossPlatformInput;
 public class Platformer2DUserControl : MonoBehaviour
 {
     [SerializeField]
-    bool IsPLayerA = false;
+    public bool IsPLayerA = false;
     [SerializeField]
     CharacterManager MainController;
     [SerializeField]

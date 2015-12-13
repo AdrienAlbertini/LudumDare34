@@ -49,28 +49,13 @@ public class CharacterManager : MonoBehaviour
             this._explosion += Time.deltaTime;
             if (this._explosion > 1.0f)
             {
-                GameObject particles = null;
                 if (this.SizePlayerA == MaxSize && PlayerA != null)
                 {
-                    particles = GameObject.Instantiate(this.misterFeathersPrefab);
-                    particles.transform.position = this.PlayerA.transform.position;
-                    AudioManager.Instance.PlaySound("MisterExplosion");
-                    AudioManager.Instance.PlaySound("MisterDeath");
-                    this._audioSource.Stop();
-                    //   this.PlayerAExplosion.Play();
-                    GameObject.Destroy(this.PlayerA.transform.parent.gameObject);
-                    LevelsManager.Instance.ReloadScene(true, 1.0f);
+                    this.KillPlayer(this.PlayerA);
                 }
                 else if (this.SizePlayerB == MaxSize && PlayerB != null)
                 {
-                    particles = GameObject.Instantiate(this.ladyFeathersPrefab);
-                    particles.transform.position = this.PlayerB.transform.position;
-                    AudioManager.Instance.PlaySound("LadyExplosion");
-                    AudioManager.Instance.PlaySound("LadyDeath");
-                    this._audioSource.Stop();
-                    //  this.PlayerBExplosion.Play();
-                    GameObject.Destroy(this.PlayerB.transform.parent.gameObject);
-                    LevelsManager.Instance.ReloadScene(true, 1.0f);
+                    this.KillPlayer(this.PlayerB);
                 }
                 Debug.Log("Explosion!");
             }
@@ -80,6 +65,34 @@ public class CharacterManager : MonoBehaviour
             this._explosion = 0;
         }
         this._hasGrown = false;
+    }
+
+    public void KillPlayer(Platformer2DUserControl player)
+    {
+        if (player != null)
+        {
+            GameObject particles = null;
+            if (player.IsPLayerA)
+            {
+                particles = GameObject.Instantiate(this.misterFeathersPrefab);
+                particles.transform.position = this.PlayerA.transform.position;
+                AudioManager.Instance.PlaySound("MisterExplosion");
+                AudioManager.Instance.PlaySound("MisterDeath");
+                this._audioSource.Stop();
+                GameObject.Destroy(this.PlayerA.transform.parent.gameObject);
+                LevelsManager.Instance.ReloadScene(true, 1.0f);
+            }
+            else
+            {
+                particles = GameObject.Instantiate(this.ladyFeathersPrefab);
+                particles.transform.position = this.PlayerB.transform.position;
+                AudioManager.Instance.PlaySound("LadyExplosion");
+                AudioManager.Instance.PlaySound("LadyDeath");
+                this._audioSource.Stop();
+                GameObject.Destroy(this.PlayerB.transform.parent.gameObject);
+                LevelsManager.Instance.ReloadScene(true, 1.0f);
+            }
+        }
     }
 
     private void _OnGrow(object sender, EventArgs e)
