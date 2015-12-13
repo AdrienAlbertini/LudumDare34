@@ -1,0 +1,17 @@
+#
+# Sprite sheet data for Unity.
+#
+# To import these sprites into your Unity project, download "TexturePackerImporter":
+# http://www.codeandweb.com/texturepacker/unity
+#
+# $TexturePacker:SmartUpdate:c95184269f7de3f0a5701ceed6f922e5:a7573476c9528bc9fa48b32811826ecb:7a283c33149115b4718ef9777dc291bd$
+#
+:format=40000
+:texture=AILE MEUF DROITE.png
+:size=8192x2048
+
+Gonflichouette-Lady-batements-d'aile-L1;1;47;1500;2000;0.5;0.5
+Gonflichouette-Lady-batements-d'aile-L2;1503;47;1500;2000;0.5;0.5
+Gonflichouette-Lady-batements-d'aile-L3;3005;47;1500;2000;0.5;0.5
+Gonflichouette-Lady-batements-d'aile-L4;4507;47;1500;2000;0.5;0.5
+Gonflichouette-Lady-batements-d'aile-L5;6009;47;1500;2000;0.5;0.5
