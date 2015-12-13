@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using UnityStandardAssets._2D;
+using UnityStandardAssets.CrossPlatformInput;
 
 namespace UnityStandardAssets._2D
 {
@@ -35,9 +37,11 @@ namespace UnityStandardAssets._2D
         private Rigidbody2D m_Rigidbody2D;
         private bool m_FacingRight = true;  // For determining which way the player is currently facing.
         private BoxCollider2D m_collider;
+        private Platformer2DUserControl _userControl;
 
         private void Awake()
         {
+            this._userControl = GetComponent<Platformer2DUserControl>();
             // Setting up references.
             m_TopCheck = transform.Find("TopCheck");
             m_DownCheck = transform.Find("BottomCheck");
@@ -160,7 +164,10 @@ namespace UnityStandardAssets._2D
             // If the player should jump...
             if (m_Grounded && jump)
             {
-                AudioManager.Instance.PlaySound("Jump");
+                if (this._userControl.IsPLayerA)
+                    AudioManager.Instance.PlaySound("MisterJump");
+                else
+                    AudioManager.Instance.PlaySound("LadyJump");
                 this.LeftWing.SetBool("Jump", true);
                 this.RightWing.SetBool("Jump", true);
                 // Add a vertical force to the player.

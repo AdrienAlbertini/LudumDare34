@@ -18,6 +18,7 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
         SceneFader.Instance.fadeOver += ScenefadeOver;
     }
 
+
     private bool _fadeIsOver;
     private void ScenefadeOver(object sender, System.EventArgs e)
     {
@@ -46,6 +47,7 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
         SceneManager.LoadScene(scene, LoadSceneMode.Single);
         while (this._isLoading)
             yield return new WaitForFixedUpdate();
+        this._isLoading = false;
         if (fade)
         {
             SceneFader.Instance.StartScene();
@@ -53,6 +55,13 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
         }
         if (scene.StartsWith("Lvl"))
         {
+            int randomRange = Random.Range(1, 3);
+
+            Debug.Log("RandomRange: " + randomRange);
+            if (randomRange == 1)
+                AudioManager.Instance.PlaySound("Rou");
+            else if (randomRange == 2)
+                AudioManager.Instance.PlaySound("Rou2");
             SaveManager.data.levelID = this._currentSceneId;
             SaveManager.instance.save();
         }
@@ -63,6 +72,7 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
         if (sceneId >= 0 && sceneId < this.scenes.Count)
         {
             this._currentSceneId = sceneId;
+            StopAllCoroutines();
             StartCoroutine(this._StartLoad(this.scenes[sceneId], fade, timer));
         }
     }
@@ -72,6 +82,7 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
         if (this.scenes.Contains(scene))
         {
             this._currentSceneId = this.scenes.IndexOf(scene);
+            StopAllCoroutines();
             StartCoroutine(this._StartLoad(scene, fade, timer));
         }
     }
