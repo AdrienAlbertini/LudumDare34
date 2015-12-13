@@ -17,7 +17,7 @@ public class DeathZone : MonoBehaviour {
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            CharacterManager cm = GameObject.Find("CharacterController 1(Clone)").GetComponentInChildren<CharacterManager>();
+            CharacterManager cm = GameObject.FindWithTag("CharacterController").GetComponentInChildren<CharacterManager>();
 
             cm.KillPlayer(other.gameObject.GetComponentInChildren<Platformer2DUserControl>());
         }
