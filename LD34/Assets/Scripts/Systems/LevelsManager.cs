@@ -36,15 +36,14 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
             this._fadeIsOver = false;
             SceneFader.Instance.EndScene();
             while (this._fadeIsOver == false)
+            {
                 yield return new WaitForFixedUpdate();
+            }
             //yield return new WaitForSeconds(SceneFader.Instance.fadeSpeed);
         }
-        Debug.Log("START LOAD SCENE: scene");
         SceneManager.LoadScene(scene, LoadSceneMode.Single);
-        Debug.Log("LOAD SCENE: scene");
         while (this._isLoading)
             yield return new WaitForFixedUpdate();
-        Debug.Log("SCENE LOADED");
         if (fade)
         {
             SceneFader.Instance.StartScene();
@@ -67,8 +66,6 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
     {
         if (this.scenes.Contains(scene))
         {
-            Debug.Log("Load Scene: " + scene);
-            Debug.Log("SceneId: " + this.scenes.IndexOf(scene));
             this._currentSceneId = this.scenes.IndexOf(scene);
             StartCoroutine(this._StartLoad(scene, fade));
         }

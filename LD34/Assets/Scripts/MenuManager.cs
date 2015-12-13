@@ -15,6 +15,7 @@ public class MenuManager : MonoBehaviour {
 
     public void toMainMenu()
     {
+        Time.timeScale = 1;
         LevelsManager.Instance.LoadScene("MainMenu");
     }
 
