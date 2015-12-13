@@ -160,6 +160,7 @@ namespace UnityStandardAssets._2D
             // If the player should jump...
             if (m_Grounded && jump)
             {
+                AudioManager.Instance.PlaySound("Jump");
                 this.LeftWing.SetBool("Jump", true);
                 this.RightWing.SetBool("Jump", true);
                 // Add a vertical force to the player.
