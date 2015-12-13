@@ -13,11 +13,13 @@ public class DeathZone : MonoBehaviour {
 	
 	}
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            LevelsManager.Instance.ReloadScene();
+            CharacterManager cm = GameObject.Find("CharacterController 1(Clone)").GetComponentInChildren<CharacterManager>();
+
+            cm.KillPlayer(other.gameObject.GetComponentInChildren<Platformer2DUserControl>());
         }
     }
 }
