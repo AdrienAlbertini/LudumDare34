@@ -20,13 +20,13 @@ public class CharacterManager : MonoBehaviour {
 	
 	public void Grow(bool _IsGrowing, bool _IsPlayerA)
 	{
-		/*if (_IsGrowing == true)
+		/* if (_IsGrowing == true)
 		{*/
 			if (!_IsPlayerA && !PlayerA.calculateIfIcanGrow())
 				return;
 			else if (!PlayerB.calculateIfIcanGrow() && _IsPlayerA)
 				return;
-	//	}
+		//}
 		if (_IsGrowing == true)
 		{
 			if (_IsPlayerA)

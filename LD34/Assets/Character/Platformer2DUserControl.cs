@@ -14,6 +14,7 @@ using UnityStandardAssets.CrossPlatformInput;
         [SerializeField] Transform[] TopCheck;
         private PlatformerCharacter2D m_Character;
         private bool m_Jump;
+        private bool canJump = true;
         
 
 
@@ -64,6 +65,8 @@ using UnityStandardAssets.CrossPlatformInput;
             }
             MainController.Grow(Grow, IsPLayerA);
             // Pass all parameters to the character control script.
+            if (canJump == false)
+                Jump = false;
             m_Character.Move(h, crouch, Jump);
             m_Jump = false;
             Jump = false;
@@ -75,7 +78,10 @@ using UnityStandardAssets.CrossPlatformInput;
          bool ret = false;
          float MinDistanceXRight = 500.0f;
          float MinDistanceXLeft = 500.0f;
+         float MinDistanceYTop = 500.0f;
+         float MinDistanceYBottom = 500.0F;
          float MinDistanceX = 0.0f;
+         float MinDistanceY = 0.0f;
          float Size = 0.0f;
          
          
@@ -113,17 +119,81 @@ using UnityStandardAssets.CrossPlatformInput;
                          }
                      }
              }
+             
+              foreach (Transform tra in TopCheck)
+            {
+                 RaycastHit2D[] collidersLeftTop = Physics2D.RaycastAll(tra.transform.position, (this.transform.up), 3.0f);
+                 for (int i = 0; i < collidersLeftTop.Length; i++)
+                 {
+                         if (collidersLeftTop[i].transform.gameObject != gameObject && collidersLeftTop[i].transform.gameObject.transform.tag != "Player")
+                        {
+                            if (MinDistanceYTop > collidersLeftTop[i].distance)
+                                MinDistanceYTop = collidersLeftTop[i].distance;
+                         }
+                     }
+             }
+            foreach (Transform tra in BottomtCheck)
+            {
+                 RaycastHit2D[] collidersLeftTop = Physics2D.RaycastAll(tra.transform.position, (this.transform.up * -1), 3.0f);
+                 for (int i = 0; i < collidersLeftTop.Length; i++)
+                 {
+                         if (collidersLeftTop[i].transform.gameObject != gameObject && collidersLeftTop[i].transform.gameObject.transform.tag != "Player")
+                        {
+                            if (MinDistanceYBottom > collidersLeftTop[i].distance)
+                                MinDistanceYBottom = collidersLeftTop[i].distance;
+                         }
+                     }
+             }
+             
+             if (MinDistanceYBottom == 500.0f)
+                MinDistanceYBottom = -1.0f;
+             if (MinDistanceYTop == 500.0f)
+                MinDistanceYTop = -1.0f;
+             
              if (MinDistanceXRight == 500.0f)
-                MinDistanceXRight = 0.0f;
+                MinDistanceXRight = -1.0f;
              if (MinDistanceXLeft == 500.0f)
-                MinDistanceXLeft = 0.0f;
+                MinDistanceXLeft = -1.0f;
+             MinDistanceY = MinDistanceYBottom + MinDistanceYTop;
              MinDistanceX =  MinDistanceXLeft + MinDistanceXRight;
              if (MinDistanceX < 0)
-                return false;
-             Debug.Log(MinDistanceX + "-----" +  0.1  + "   " +  IsPLayerA);
-             if (MinDistanceX == 0 || MinDistanceX > 1f)
+                ret =  true;
+             else if (MinDistanceX == 0)
+                ret =  false;
+             else if (MinDistanceX > 0.1f)
+                ret =  true;
+             else
+                ret =  false;
+             if (ret == false)
+             {
+                 m_Character.GetComponent<Rigidbody2D>().gravityScale = 0;
+                 Vector2 vec =  m_Character.GetComponent<Rigidbody2D>().velocity;
+                 vec.y = 0.0f;
+                 m_Character.GetComponent<Rigidbody2D>().velocity = vec;
+                 Debug.Log("Nogravity" + "   " + IsPLayerA);
+                 canJump = false;
+             }
+             else
+             {
+                 Debug.Log("Gravity" + "   " + IsPLayerA);
+                 m_Character.GetComponent<Rigidbody2D>().gravityScale = 3;
+                 canJump = true;
+             }
+               
+             bool ret2 = false;  
+             if (MinDistanceY < 0)
+                ret2 =  true;
+             else if (MinDistanceY == 0)
+                ret2 =  false;
+             else if (MinDistanceY > 0.1f)
+                ret2 =  true;
+             else
+                ret2 =  false;
+             if (ret == true && ret2 == true)
                 return true;
              else
                 return false;
+       
+               
             }   
     }
