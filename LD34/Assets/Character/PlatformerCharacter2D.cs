@@ -11,6 +11,10 @@ namespace UnityStandardAssets._2D
         private float m_MaxSpeed = 10f;                    // The fastest the player can travel in the x axis.
         [SerializeField]
         private float m_JumpForce = 400f;                  // Amount of force added when the player jumps.
+        [SerializeField]
+        private Animator LeftWing; 
+        [SerializeField]
+        private Animator RightWing; 
         [Range(0, 1)]
         [SerializeField]
         private float m_CrouchSpeed = .36f;  // Amount of maxSpeed applied to crouching movement. 1 = 100%
@@ -117,6 +121,11 @@ namespace UnityStandardAssets._2D
 
         public void Move(float move, bool crouch, bool jump)
         {
+            if (m_Grounded)
+            {
+                this.LeftWing.SetBool("Jump", false);
+                this.RightWing.SetBool("Jump", false);
+            }
             if (m_LeftCollide == true && move < 0.0f)
                 move = 0.0f;
             if (m_RightCollide == true && move > 0.0f)
@@ -152,6 +161,8 @@ namespace UnityStandardAssets._2D
             // If the player should jump...
             if (m_Grounded && jump)
             {
+                this.LeftWing.SetBool("Jump", true);
+                this.RightWing.SetBool("Jump", true);
                 // Add a vertical force to the player.
                 m_Grounded = false;
                 //  m_Anim.SetBool("Ground", false);
