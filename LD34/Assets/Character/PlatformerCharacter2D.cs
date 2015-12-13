@@ -11,12 +11,11 @@ namespace UnityStandardAssets._2D
         [Range(0, 1)] [SerializeField] private float m_CrouchSpeed = .36f;  // Amount of maxSpeed applied to crouching movement. 1 = 100%
         [SerializeField] private bool m_AirControl = false;                 // Whether or not a player can steer while jumping;
         [SerializeField] private LayerMask m_WhatIsGround;                  // A mask determining what is ground to the character
-        private Transform m_GroundCheck;    // A position marking where to check if the player is grounded.
         const float k_GroundedRadius = .1f; // Radius of the overlap circle to determine if grounded
         private bool m_Grounded;            // Whether or not the player is grounded.
         private bool m_LeftCollide;
         private bool m_RightCollide;
-        private Transform m_CeilingCheck;   // A position marking where to check for ceilings
+        public Transform[] m_GroundCheck;   // A position marking where to check for ceilings
         private Transform m_TopCheck;   // A position marking where to check for ceilings
         private Transform m_DownCheck;   // A position marking where to check for ceilings
         
@@ -24,16 +23,16 @@ namespace UnityStandardAssets._2D
        // private Animator m_Anim;            // Reference to the player's animator component.
         private Rigidbody2D m_Rigidbody2D;
         private bool m_FacingRight = true;  // For determining which way the player is currently facing.
+        private BoxCollider2D m_collider;
 
         private void Awake()
         {
             // Setting up references.
-            m_GroundCheck = transform.Find("GroundCheck");
-            m_CeilingCheck = transform.Find("CeilingCheck");
             m_TopCheck = transform.Find("TopCheck");
             m_DownCheck = transform.Find("BottomCheck");
          //   m_Anim = GetComponent<Animator>();
             m_Rigidbody2D = GetComponent<Rigidbody2D>();
+            m_collider = GetComponent<BoxCollider2D>();
         }
 
 
@@ -45,11 +44,31 @@ namespace UnityStandardAssets._2D
 
             // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
             // This can be done using layers instead but Sample Assets will not overwrite your project settings.
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
-            for (int i = 0; i < colliders.Length; i++)
+            bool m_transferForce = false;
+            GameObject m_PLayertotransfer = null;
+            foreach (Transform tra in m_GroundCheck)
             {
-                if (colliders[i].gameObject != gameObject)
-                    m_Grounded = true;
+                 Collider2D[] colliders = Physics2D.OverlapCircleAll(tra.position, k_GroundedRadius, m_WhatIsGround);
+                 for (int i = 0; i < colliders.Length; i++)
+                 {
+                     if (colliders[i].gameObject != gameObject)
+                     {
+                      m_Grounded = true;
+                      if (colliders[i].gameObject.transform.tag == "Player")
+                      {
+                          m_transferForce = true;
+                          m_PLayertotransfer = colliders[i].gameObject;
+                      }
+                     }
+                 }   
+            }
+            
+            if (m_transferForce)
+            {
+                Vector2 vel =  m_PLayertotransfer.GetComponent<Rigidbody2D>().velocity;
+                Vector2 _vel = this.m_Rigidbody2D.velocity;
+                _vel.x += vel.x;
+                this.m_Rigidbody2D.velocity = _vel;
             }
             
             RaycastHit2D[] collidersLeftTop = Physics2D.RaycastAll(m_TopCheck.position, (this.transform.right * -1), 0.5f * this.transform.localScale.x + 0.05f, m_WhatIsGround);
@@ -96,18 +115,6 @@ namespace UnityStandardAssets._2D
                 move = 0.0f;
             if (m_RightCollide == true && move > 0.0f)
                 move = 0.0f;
-            // If crouching, check to see if the character can stand up
-            if (!crouch)
-            {
-                // If the character has a ceiling preventing them from standing up, keep them crouching
-                if (Physics2D.OverlapCircle(m_CeilingCheck.position, k_CeilingRadius, m_WhatIsGround))
-                {
-                    crouch = true;
-                }
-            }
-
-            // Set whether or not the character is crouching in the animator
-           // m_Anim.SetBool("Crouch", crouch);
 
             //only control the player if grounded or airControl is turned on
             if (m_Grounded || m_AirControl)
@@ -151,6 +158,7 @@ namespace UnityStandardAssets._2D
             }
         }
 
+       
 
         private void Flip()
         {

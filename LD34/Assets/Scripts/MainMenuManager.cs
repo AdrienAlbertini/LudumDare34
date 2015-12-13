@@ -41,7 +41,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void continueGame()
     {
-        //LevelsManager.Instance.LoadScene();
+        LevelsManager.Instance.LoadScene(SaveManager.data.levelID);
     }
 
     public void play()
