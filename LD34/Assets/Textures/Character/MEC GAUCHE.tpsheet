@@ -1,0 +1,17 @@
+#
+# Sprite sheet data for Unity.
+#
+# To import these sprites into your Unity project, download "TexturePackerImporter":
+# http://www.codeandweb.com/texturepacker/unity
+#
+# $TexturePacker:SmartUpdate:b5af943df01e7db360347145c88ac34a:b68f07294b4711cbcc89d46cfca5d3ce:5105d4a27b73afa04056ddb971245a63$
+#
+:format=40000
+:texture=MEC GAUCHE.png
+:size=8192x2048
+
+Gonflichouette-Mister-batements-d'aile-R1;1;47;1500;2000;0.5;0.5
+Gonflichouette-Mister-batements-d'aile-R2;1503;47;1500;2000;0.5;0.5
+Gonflichouette-Mister-batements-d'aile-R3;3005;47;1500;2000;0.5;0.5
+Gonflichouette-Mister-batements-d'aile-R4;4507;47;1500;2000;0.5;0.5
+Gonflichouette-Mister-batements-d'aile-R5;6009;47;1500;2000;0.5;0.5
