@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="15" height="11" tilewidth="200" tileheight="200" nextobjectid="1">
+ <tileset firstgid="1" name="Tiles" tilewidth="200" tileheight="200" tilecount="8">
+  <tile id="0">
+   <image width="200" height="200" source="../../Sprites/Ground-Blocks1.png"/>
+  </tile>
+  <tile id="1">
+   <image width="200" height="200" source="../../Sprites/Ground-Blocks2.png"/>
+  </tile>
+  <tile id="2">
+   <image width="200" height="200" source="../../Sprites/Ground-Blocks3.png"/>
+  </tile>
+  <tile id="3">
+   <image width="200" height="200" source="../../Sprites/Ground-Blocks4.png"/>
+  </tile>
+  <tile id="4">
+   <image width="200" height="200" source="../../Sprites/Ground-Blocks-Empty.png"/>
+  </tile>
+  <tile id="5">
+   <image width="200" height="200" source="../../Sprites/Ground-Blocks-Soft1.png"/>
+  </tile>
+  <tile id="6">
+   <image width="200" height="200" source="../../Sprites/Ground-Blocks-Soft2.png"/>
+  </tile>
+  <tile id="7">
+   <image width="200" height="200" source="../../Sprites/Ground-Blocks-Soft3.png"/>
+  </tile>
+ </tileset>
+ <layer name="Calque de Tile 1" width="15" height="11">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgF6IARiJkZGA4wQ9gHmKB8YvQC1S5gZ2Bo4GBgeMDGwJAAZDMA2QnE6GUBqmMF0uiYSHsPYNMLFHcAybFA/cAEsecAI5LfgHQDNr1sED80ADED1B9gNjMO9dTCAKJRDXg=
+  </data>
+ </layer>
+</map>

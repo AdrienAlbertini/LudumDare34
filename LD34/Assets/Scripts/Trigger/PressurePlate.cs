@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 public interface PressurePlateListener
@@ -12,7 +13,7 @@ public interface PressurePlateListener
 public class PressurePlate : MonoBehaviour
 {
     [SerializeField]
-    private GameObject Target = null;
+    public List<GameObject> Targets = null;
 
     private Collider2D _collider;
     private Animation _animation;
@@ -45,7 +46,7 @@ public class PressurePlate : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (!this.UseOnce && this._triggered)
+        if (this._triggered)
             this.Untrigger(other);
     }
 
@@ -59,17 +60,13 @@ public class PressurePlate : MonoBehaviour
         else
             this._animation.Play("PressurePlateMoveUp");
 
-        PressurePlateListener[] targets;
+        foreach (GameObject Target in this.Targets)
+        {
+            PressurePlateListener listener = Target.GetComponent<PressurePlateListener>();
 
-        if (this.Target == null)
-            Debug.LogWarning("PressurePlate null target");
-        else if ((targets = this.Target.GetComponents<PressurePlateListener>()) == null)
-            Debug.LogWarning("No PressurePlateListener on target");
-        else
-            foreach (PressurePlateListener listener in targets)
-            {
+            if (listener != null)
                 listener.OnPressurePlateTriggerOut(this);
-            }
+        }
     }
 
     private void CheckTrigger(Collider2D other)
@@ -84,17 +81,17 @@ public class PressurePlate : MonoBehaviour
             else
                 this._animation.Play("PressurePlateMoveDown");
 
-            PressurePlateListener[] targets;
+            //foreach (PressurePlateListener Target in this.Targets)
+            //{
+            //    Target.OnPressurePlateTriggerIn(this);
+            //}
+            foreach (GameObject Target in this.Targets)
+            {
+                PressurePlateListener listener = Target.GetComponent<PressurePlateListener>();
 
-            if (this.Target == null)
-                Debug.LogWarning("PressurePlate null target");
-            else if ((targets = this.Target.GetComponents<PressurePlateListener>()) == null)
-                Debug.LogWarning("No PressurePlateListener on target");
-            else
-                foreach (PressurePlateListener listener in targets)
-                {
+                if (listener != null)
                     listener.OnPressurePlateTriggerIn(this);
-                }
+            }
 
             if (this.UseOnce)
                 this.enabled = false;

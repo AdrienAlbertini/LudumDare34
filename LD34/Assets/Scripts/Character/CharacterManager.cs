@@ -102,15 +102,18 @@ public class CharacterManager : MonoBehaviour
 
     private void _OnGrow(object sender, EventArgs e)
     {
-        Debug.Log("OnGrow");
-        this._audioSource.Stop();
-        this._audioSource.clip = this.growSound;
-        this._audioSource.Play();
+        if (PlayerA && PlayerB)
+        {
+            Debug.Log("OnGrow");
+            this._audioSource.Stop();
+            this._audioSource.clip = this.growSound;
+            this._audioSource.Play();
+        }
     }
     private void _OnGrowEnd(object sender, EventArgs e)
     {
         Debug.Log("OnGrowEnd");
-        if (PlayerA != null && PlayerB != null && PlayerA.Grow == false && PlayerB.Grow == false)
+        if (PlayerA && PlayerB && PlayerA.Grow == false && PlayerB.Grow == false)
             this._audioSource.Stop();
     }
 

@@ -10,25 +10,28 @@ public class ToggleDoor : MonoBehaviour, PressurePlateListener
     public float height = 3.0f;
     public dir direction = dir.UP;
     public int nbNeeded = 1;
+    public bool isBackAndForth = false;
     private int nbPressed = 0;
 
     private float _step;
     private Vector3 _initialPosition;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start()
     {
         _initialPosition = transform.position;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     public void OnPressurePlateTriggerOut(PressurePlate sender)
     {
-       //StartCoroutine(this.MoveDoor(_initialPosition));
+        if (this.isBackAndForth)
+            StartCoroutine(this.MoveDoor(_initialPosition));
     }
 
     public void OnPressurePlateTriggerIn(PressurePlate sender)
@@ -62,7 +65,7 @@ public class ToggleDoor : MonoBehaviour, PressurePlateListener
                     break;
                 }
         }
-        
+
         Vector3 endPos = transform.position + vecDir;
         StartCoroutine(this.MoveDoor(endPos));
     }
@@ -72,7 +75,7 @@ public class ToggleDoor : MonoBehaviour, PressurePlateListener
         float t = 0f;
         Vector3 startPos = transform.position;
         while (Vector3.Distance(startPos, endPos) > 0.0f)
-         {
+        {
             t += speed * Time.deltaTime;
             transform.position = Vector3.Lerp(startPos, endPos, t);
             yield return new WaitForEndOfFrame();
