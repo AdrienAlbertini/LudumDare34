@@ -1,17 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MenuManager : MonoBehaviour {
+public class MenuManager : MonoBehaviour
+{
     public GameObject holder;
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    // Use this for initialization
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.JoystickButton7))
+        {
+            Cursor.visible = true;
+            this.holder.SetActive(true);
+            Time.timeScale = 0;
+        }
+    }
 
     public void toMainMenu()
     {
@@ -34,6 +42,5 @@ public class MenuManager : MonoBehaviour {
             this.holder.SetActive(true);
             Time.timeScale = 0;
         }
-
     }
 }

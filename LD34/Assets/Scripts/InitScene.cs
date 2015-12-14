@@ -6,9 +6,9 @@ public class InitScene : MonoBehaviour
 {
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
-        SceneManager.LoadScene("MainMenu");
+        LevelsManager.Instance.LoadScene("MainMenu", false);
     }
 
     // Update is called once per frame

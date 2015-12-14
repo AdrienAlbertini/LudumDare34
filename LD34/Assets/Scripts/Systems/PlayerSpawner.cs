@@ -29,12 +29,12 @@ public class PlayerSpawner : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    void Update()
     {
-        //if (Input.GetButtonUp("Restart"))
-        //{
-        //    LevelsManager.Instance.ReloadScene();
-        //}
+        if (Input.GetKeyDown(KeyCode.JoystickButton6))
+        {
+            LevelsManager.Instance.ReloadScene();
+        }
     }
 
     void OnRestart(Custom.Inputs.VO.IActionVO pAction)

@@ -55,6 +55,10 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
         }
         if (scene.StartsWith("Lvl"))
         {
+            if (AudioManager.Instance.playingMusic == "Menu" || AudioManager.Instance.playingMusic == "")
+            {
+                AudioManager.Instance.musicSource.Stop();
+            }
             int randomRange = Random.Range(1, 3);
 
             Debug.Log("RandomRange: " + randomRange);
@@ -64,6 +68,11 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
                 AudioManager.Instance.PlaySound("Rou2");
             SaveManager.data.levelID = this._currentSceneId;
             SaveManager.instance.save();
+        }
+        else if (scene == "MainMenu")
+        {
+            Debug.Log("MainMenu");
+            AudioManager.Instance.PlayMusic("Menu");
         }
     }
 

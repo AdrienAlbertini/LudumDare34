@@ -6,8 +6,11 @@ public class MainMenuManager : MonoBehaviour
 {
     public GameObject holder;
     public GameObject selectLvl;
+    public Button continueButton;
     public bool isAllLevels = false;
     public InputField lvlLoaderField;
+    public int startSceneId = 2;
+
     // Use this for initialization
     void Start()
     {
@@ -17,28 +20,33 @@ public class MainMenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.JoystickButton1) && this.selectLvl.activeSelf)
+        {
+            AudioManager.Instance.PlaySound("MenuJoystickPush", 1.0f);
+            this.BackToMainMenu();
+        }
     }
 
-    public void quit()
+    public void Quit()
     {
         Application.Quit();
     }
 
-    public void backToMainMenu()
+    public void BackToMainMenu()
     {
         this.holder.SetActive(true);
         this.selectLvl.SetActive(false);
     }
 
-    public void selectLevel()
+    public void SelectLevel()
     {
         this.holder.SetActive(false);
         this.selectLvl.SetActive(true);
 
         //GETCHILD 0 = backbutton
-        if (this.isAllLevels == true)
+        if (this.isAllLevels)
         {
+            this.lvlLoaderField.gameObject.SetActive(false);
             Button[] buttons = this.selectLvl.transform.GetComponentsInChildren<Button>();
 
             for (int i = 0; i < buttons.Length; ++i)
@@ -55,20 +63,26 @@ public class MainMenuManager : MonoBehaviour
 
     public void LvlLoaderEndEdit()
     {
-        this.goToLevel(this.lvlLoaderField.text);
+        this.GoToLevel(this.lvlLoaderField.text);
     }
 
-    public void goToLevel(string scene)
+    public void GoToLevel(string scene)
     {
         LevelsManager.Instance.LoadScene(scene);
     }
 
-    public void continueGame()
+    public void NewGame()
+    {
+        LevelsManager.Instance.LoadScene(this.startSceneId);
+        SaveManager.data.levelID = this.startSceneId;
+    }
+
+    public void ContinueGame()
     {
         LevelsManager.Instance.LoadScene(SaveManager.data.levelID);
     }
 
-    public void play()
+    public void Play()
     {
 
     }
