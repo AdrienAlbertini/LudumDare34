@@ -11,6 +11,7 @@ public class CharacterManager : MonoBehaviour
     public float SizePlayerB;
     public float MaxSize = 10.0f;
     public float MinSize = 1.0f;
+    public float growSoundVolume = 0.4f;
     public Platformer2DUserControl PlayerA;
     public Platformer2DUserControl PlayerB;
     public GameObject misterFeathersPrefab;
@@ -45,6 +46,7 @@ public class CharacterManager : MonoBehaviour
             if (this._explosion <= 0.0f)
             {
                 this._audioSource.clip = this.growLimitSound;
+                this._audioSource.volume = 1.0f;
                 this._audioSource.Play();
             }
             this._explosion += Time.deltaTime;
@@ -107,6 +109,7 @@ public class CharacterManager : MonoBehaviour
             Debug.Log("OnGrow");
             this._audioSource.Stop();
             this._audioSource.clip = this.growSound;
+            this._audioSource.volume = this.growSoundVolume;
             this._audioSource.Play();
         }
     }

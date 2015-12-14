@@ -12,12 +12,21 @@ public class ToggleDoor : MonoBehaviour, PressurePlateListener
     public bool isBackAndForth = false;
 
     private float _step;
+    private bool _isPlayerBlocking = false;
     private Vector3 _initialPosition;
+    private Vector3 _currentEndPos;
 
     // Use this for initialization
     void Start()
     {
         _initialPosition = transform.position;
+        PlayerTrigger[] triggers = this.GetComponentsInChildren<PlayerTrigger>();
+
+        foreach (PlayerTrigger trigger in triggers)
+        {
+            trigger.onPlayerTrigger += this._OnPlayerBlock;
+            trigger.onPlayerUnTrigger += this._OnPlayerUnBlock;
+        }
     }
 
     // Update is called once per frame
@@ -68,11 +77,31 @@ public class ToggleDoor : MonoBehaviour, PressurePlateListener
     {
         float t = 0f;
         Vector3 startPos = transform.position;
-        while (Vector3.Distance(startPos, endPos) > 0.0f)
+        this._currentEndPos = endPos;
+        while (Vector3.Distance(startPos, this._currentEndPos) > 0.0f)
         {
-            t += speed * Time.deltaTime;
-            transform.position = Vector3.Lerp(startPos, endPos, t);
+            if (!this._isPlayerBlocking)
+            {
+                t += speed * Time.deltaTime;
+                transform.position = Vector3.Lerp(startPos, this._currentEndPos, t);
+            }
             yield return new WaitForEndOfFrame();
+
         }
+    }
+
+    private void _OnPlayerBlock(object sender, EventArgs e)
+    {
+        PlayerTrigger playerTrigger = (PlayerTrigger)sender;
+
+        if (playerTrigger.transform.forward.normalized == (this._currentEndPos - this.transform.position).normalized)
+        {
+            Debug.Log("PLAYER BLOCK");
+            this._isPlayerBlocking = true;
+        }
+    }
+    private void _OnPlayerUnBlock(object sender, EventArgs e)
+    {
+        this._isPlayerBlocking = false;
     }
 }
