@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class GamepadMenuHandler : MonoBehaviour
@@ -6,8 +7,17 @@ public class GamepadMenuHandler : MonoBehaviour
     public GamepadButtonHandler currentSelectedButton;
     public float untriggerThreshold = 0.4f;
     public float triggerThreshold = 0.6f;
+    public Color unselectedBackColor;
+    public Color selectedBackColor;
+    public Color unselectedTextColor;
+    public Color selectedTextColor;
     private bool _hTriggered, _vTriggered, _pressTriggered;
     
+    void Awake()
+    {
+        this.currentSelectedButton.GetComponent<Image>().color = this.selectedBackColor;
+        this.currentSelectedButton.GetComponentInChildren<Text>().color = this.selectedTextColor;
+    }
 
     void FixedUpdate()
     {
@@ -22,7 +32,7 @@ public class GamepadMenuHandler : MonoBehaviour
             AudioManager.Instance.PlaySound("MenuJoystickPush");
             currentSelectedButton.TriggerButton();
             if (this.currentSelectedButton.onTriggerNextButton != null)
-                this.currentSelectedButton = this.currentSelectedButton.onTriggerNextButton;
+                this.NewSelectedButton(this.currentSelectedButton.onTriggerNextButton);
         }
         else
         {
@@ -40,7 +50,7 @@ public class GamepadMenuHandler : MonoBehaviour
                 {
                     this._hTriggered = true;
                     this._vTriggered = false;
-                    this._NewSelectedButton(currentSelectedButton.right);
+                    this.NewSelectedButton(currentSelectedButton.right);
                 }
             }
             else if (h <= -triggerThreshold)
@@ -49,7 +59,7 @@ public class GamepadMenuHandler : MonoBehaviour
                 {
                     this._hTriggered = true;
                     this._vTriggered = false;
-                    this._NewSelectedButton(currentSelectedButton.left);
+                    this.NewSelectedButton(currentSelectedButton.left);
                 }
             }
             if (v >= triggerThreshold)
@@ -58,7 +68,7 @@ public class GamepadMenuHandler : MonoBehaviour
                 {
                     this._vTriggered = true;
                     this._hTriggered = false;
-                    this._NewSelectedButton(currentSelectedButton.up);
+                    this.NewSelectedButton(currentSelectedButton.up);
                 }
             }
             else if (v <= -triggerThreshold)
@@ -67,16 +77,20 @@ public class GamepadMenuHandler : MonoBehaviour
                 {
                     this._vTriggered = true;
                     this._hTriggered = false;
-                    this._NewSelectedButton(currentSelectedButton.down);
+                    this.NewSelectedButton(currentSelectedButton.down);
                 }
             }
         }
     }
 
-    private void _NewSelectedButton(GamepadButtonHandler newButton)
+    public void NewSelectedButton(GamepadButtonHandler newButton)
     {
         Debug.Log("New Selected Button: " + newButton.gameObject.name);
+        this.currentSelectedButton.GetComponent<Image>().color = this.unselectedBackColor;
+        this.currentSelectedButton.GetComponentInChildren<Text>().color = this.unselectedTextColor;
         this.currentSelectedButton = newButton;
+        this.currentSelectedButton.GetComponent<Image>().color = this.selectedBackColor;
+        this.currentSelectedButton.GetComponentInChildren<Text>().color = this.selectedTextColor;
         AudioManager.Instance.PlaySound("MenuJoystickMove");
     }
 }

@@ -6,7 +6,9 @@ public class MainMenuManager : MonoBehaviour
 {
     public GameObject holder;
     public GameObject selectLvl;
-    public Button continueButton;
+    public GamepadButtonHandler continueButton;
+    public GamepadButtonHandler selectLevelButton;
+    public GamepadMenuHandler menuHandler;
     public bool isAllLevels = false;
     public InputField lvlLoaderField;
     public int startSceneId = 2;
@@ -22,6 +24,7 @@ public class MainMenuManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.JoystickButton1) && this.selectLvl.activeSelf)
         {
+            this.menuHandler.NewSelectedButton(this.selectLevelButton);
             AudioManager.Instance.PlaySound("MenuJoystickPush", 1.0f);
             this.BackToMainMenu();
         }
