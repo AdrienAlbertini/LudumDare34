@@ -55,23 +55,30 @@ public class PressurePlate : MonoBehaviour
         this._triggered = false;
 
         Debug.Log("Pressure plate untriggered");
-        if (this._animation == null || this._animation.GetClip("PressurePlateMoveUp") == null)
-            Debug.LogWarning("No animation on pressure plate");
-        else
-            this._animation.Play("PressurePlateMoveUp");
+        if ((this.UseOnce && this.enabled) || !this.UseOnce)
+        {
+            if (this._animation == null || this._animation.GetClip("PressurePlateMoveUp") == null)
+                Debug.LogWarning("No animation on pressure plate");
+            else
+                this._animation.Play("PressurePlateMoveUp");
+        }
 
         foreach (GameObject Target in this.Targets)
         {
             PressurePlateListener listener = Target.GetComponent<PressurePlateListener>();
 
             if (listener != null)
-                listener.OnPressurePlateTriggerOut(this);
+            {
+                if ((this.UseOnce && this.enabled) || !this.UseOnce)
+                    listener.OnPressurePlateTriggerOut(this);
+            }
         }
     }
 
     private void CheckTrigger(Collider2D other)
     {
-        if (other.gameObject.transform.localScale.x >= this.RequiredSize)
+        if (other.gameObject.transform.localScale.x >= this.RequiredSize
+            && ((this.UseOnce && this.enabled) || !this.UseOnce))
         {
             this._triggered = true;
 
@@ -90,7 +97,10 @@ public class PressurePlate : MonoBehaviour
                 PressurePlateListener listener = Target.GetComponent<PressurePlateListener>();
 
                 if (listener != null)
-                    listener.OnPressurePlateTriggerIn(this);
+                {
+                    if ((this.UseOnce && this.enabled) || !this.UseOnce)
+                        listener.OnPressurePlateTriggerIn(this);
+                }
             }
 
             if (this.UseOnce)

@@ -100,7 +100,7 @@ public class ToggleDoor : MonoBehaviour, PressurePlateListener
 
         Debug.Log("Vec1: " + ((playerTrigger.transform.position - this.transform.position).normalized)
             + " | Vec2: " + this._vecDir.normalized);
-        if ((playerTrigger.transform.position - this.transform.position).normalized == this._vecDir.normalized)
+        //if ((playerTrigger.transform.position - this.transform.position).normalized == this._vecDir.normalized)
         {
             Debug.Log("PlayerBlock");
             this._isPlayerBlocking = true;

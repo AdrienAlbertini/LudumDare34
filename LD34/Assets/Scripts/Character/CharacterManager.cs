@@ -118,10 +118,16 @@ public class CharacterManager : MonoBehaviour
     {
         /*if (_IsGrowing == true)
 		{*/
-        if (PlayerA && !_IsPlayerA && !PlayerA.calculateIfIcanGrow())
+        if (!_IsPlayerA && PlayerA != null && !PlayerA.calculateIfIcanGrow())
             return false;
-        else if (PlayerB && !PlayerB.calculateIfIcanGrow() && _IsPlayerA)
+        else if (_IsPlayerA && PlayerB != null && !PlayerB.calculateIfIcanGrow())
             return false;
+        if (!PlayerA.isActiveAndEnabled)
+            PlayerB.calculateIfIcanGrow();
+
+        if (!PlayerB.isActiveAndEnabled)
+            PlayerA.calculateIfIcanGrow();
+
         //	}
         if (SizePlayerA < MinSize || SizePlayerB < MinSize)
         {
