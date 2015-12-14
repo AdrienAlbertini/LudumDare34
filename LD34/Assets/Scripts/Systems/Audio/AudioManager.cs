@@ -43,6 +43,7 @@ public class AudioManager : SingletonBehaviour<AudioManager>
             if (this.musicList[i].audioName == musicName)
             {
                 this.musicSource.clip = this.musicList[i].audioClip;
+                this.musicSource.loop = true;
                 this.playingMusic = this.musicList[i].audioName;
                 this.musicSource.Play();
                 return;

@@ -21,6 +21,6 @@ public class ToggleBumper : MonoBehaviour, PressurePlateListener
 
     public void OnPressurePlateTriggerOut(PressurePlate sender)
     {
-        throw new NotImplementedException();
+        this.GetComponent<Bumper>().bumperOn = false;
     }
 }
