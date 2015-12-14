@@ -13,7 +13,12 @@ public class DeathZone : MonoBehaviour {
 	
 	}
 
-    void OnTriggerStay2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        OnTriggerStay2D(other);
+    }
+
+        void OnTriggerStay2D(Collider2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {

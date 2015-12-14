@@ -122,10 +122,10 @@ public class CharacterManager : MonoBehaviour
             return false;
         else if (_IsPlayerA && PlayerB != null && !PlayerB.calculateIfIcanGrow())
             return false;
-        if (!PlayerA.isActiveAndEnabled)
+        if (PlayerA == null || !PlayerA.isActiveAndEnabled)
             PlayerB.calculateIfIcanGrow();
 
-        if (!PlayerB.isActiveAndEnabled)
+        if (PlayerB == null || !PlayerB.isActiveAndEnabled)
             PlayerA.calculateIfIcanGrow();
 
         //	}
