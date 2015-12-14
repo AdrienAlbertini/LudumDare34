@@ -73,7 +73,10 @@ public class MainMenuManager : MonoBehaviour
 
     public void NewGame()
     {
-        LevelsManager.Instance.LoadScene(this.startSceneId);
+        int rand = Random.Range(0, 2);
+        string[] randStr = { "Gonflichouette1", "Gonflichouette2" };
+        AudioManager.Instance.PlaySound(randStr[rand]);
+        LevelsManager.Instance.LoadScene(this.startSceneId, true, 1.0f);
         SaveManager.data.levelID = this.startSceneId;
     }
 

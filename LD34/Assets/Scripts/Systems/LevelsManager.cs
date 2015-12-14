@@ -10,6 +10,7 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
     private bool _isNextSceneLoaded = false;
     private AsyncOperation _asyncOp;
     private bool _isLoading = false;
+    private bool _fadeIsOver;
 
     void Awake()
     {
@@ -18,8 +19,6 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
         SceneFader.Instance.fadeOver += ScenefadeOver;
     }
 
-
-    private bool _fadeIsOver;
     private void ScenefadeOver(object sender, System.EventArgs e)
     {
         this._fadeIsOver = true;
@@ -58,6 +57,7 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
             if (AudioManager.Instance.playingMusic == "Menu" || AudioManager.Instance.playingMusic == "")
             {
                 AudioManager.Instance.musicSource.Stop();
+                AudioManager.Instance.PlayMusic("Game");
             }
             int randomRange = Random.Range(1, 3);
 
