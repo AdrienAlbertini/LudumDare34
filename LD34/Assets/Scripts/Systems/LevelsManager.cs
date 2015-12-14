@@ -74,6 +74,11 @@ public class LevelsManager : SingletonBehaviour<LevelsManager>
             Debug.Log("MainMenu");
             AudioManager.Instance.PlayMusic("Menu");
         }
+        else if (scene == "Ending")
+        {
+            Debug.Log("MainMenu");
+            AudioManager.Instance.PlayMusic("Ending");
+        }
     }
 
     public void LoadScene(int sceneId, bool fade = true, float timer = 0.0f)
