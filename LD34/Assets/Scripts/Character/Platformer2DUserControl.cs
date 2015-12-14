@@ -190,8 +190,6 @@ public class Platformer2DUserControl : MonoBehaviour
             ret = false;
         else if (MinDistanceX > 0.1f)
             ret = true;
-        else if (MinDistanceX >= 500.0f)
-            ret = true;
         else
             ret = false;
         if (ret == false)
@@ -218,8 +216,6 @@ public class Platformer2DUserControl : MonoBehaviour
             ret2 = false;
         else if (MinDistanceY > 0.1f)
             ret2 = true;
-        else if (MinDistanceY >= 500.0f)
-            ret = true;
         else
             ret2 = false;
         if (ret == true && ret2 == true)
