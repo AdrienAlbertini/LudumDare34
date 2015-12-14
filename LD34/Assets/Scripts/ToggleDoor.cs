@@ -14,7 +14,7 @@ public class ToggleDoor : MonoBehaviour, PressurePlateListener
     private float _step;
     private bool _isPlayerBlocking = false;
     private Vector3 _initialPosition;
-    private Vector3 _currentEndPos;
+    private Vector3 _vecDir = Vector3.zero;
 
     // Use this for initialization
     void Start()
@@ -27,6 +27,7 @@ public class ToggleDoor : MonoBehaviour, PressurePlateListener
             trigger.onPlayerTrigger += this._OnPlayerBlock;
             trigger.onPlayerUnTrigger += this._OnPlayerUnBlock;
         }
+        Debug.Log("TriggersNb: " + triggers.Length);
     }
 
     // Update is called once per frame
@@ -43,33 +44,34 @@ public class ToggleDoor : MonoBehaviour, PressurePlateListener
 
     public void OnPressurePlateTriggerIn(PressurePlate sender)
     {
-        Vector3 vecDir = Vector3.zero;
+        this._vecDir = Vector3.zero;
 
         switch (this.direction)
         {
             case dir.UP:
                 {
-                    vecDir = new Vector3(0f, height, 0f);
+                    this._vecDir = new Vector3(0f, height, 0f);
                     break;
                 }
             case dir.DOWN:
                 {
-                    vecDir = new Vector3(0f, -height, 0f);
+                    this._vecDir = new Vector3(0f, -height, 0f);
                     break;
                 }
             case dir.LEFT:
                 {
-                    vecDir = new Vector3(-height, 0f, 0f);
+                    this._vecDir = new Vector3(-height, 0f, 0f);
                     break;
                 }
             case dir.RIGHT:
                 {
-                    vecDir = new Vector3(height, 0f, 0f);
+                    this._vecDir = new Vector3(height, 0f, 0f);
                     break;
                 }
         }
 
-        Vector3 endPos = transform.position + vecDir;
+        Vector3 endPos = transform.position + this._vecDir;
+        Debug.Log("TRIGGER");
         StartCoroutine(this.MoveDoor(endPos));
     }
 
@@ -77,16 +79,18 @@ public class ToggleDoor : MonoBehaviour, PressurePlateListener
     {
         float t = 0f;
         Vector3 startPos = transform.position;
-        this._currentEndPos = endPos;
-        while (Vector3.Distance(startPos, this._currentEndPos) > 0.0f)
+        while (Vector3.Distance(transform.position, endPos) > 0.0f)
         {
             if (!this._isPlayerBlocking)
             {
                 t += speed * Time.deltaTime;
-                transform.position = Vector3.Lerp(startPos, this._currentEndPos, t);
+                transform.position = Vector3.Lerp(startPos, endPos, t);
+            }
+            else
+            {
+                Debug.Log("DeltaTime: " + Time.deltaTime);
             }
             yield return new WaitForEndOfFrame();
-
         }
     }
 
@@ -94,14 +98,17 @@ public class ToggleDoor : MonoBehaviour, PressurePlateListener
     {
         PlayerTrigger playerTrigger = (PlayerTrigger)sender;
 
-        if (playerTrigger.transform.forward.normalized == (this._currentEndPos - this.transform.position).normalized)
+        Debug.Log("Vec1: " + ((playerTrigger.transform.position - this.transform.position).normalized)
+            + " | Vec2: " + this._vecDir.normalized);
+        if ((playerTrigger.transform.position - this.transform.position).normalized == this._vecDir.normalized)
         {
-            Debug.Log("PLAYER BLOCK");
+            Debug.Log("PlayerBlock");
             this._isPlayerBlocking = true;
         }
     }
     private void _OnPlayerUnBlock(object sender, EventArgs e)
     {
+        Debug.Log("PlayerUnBlock");
         this._isPlayerBlocking = false;
     }
 }

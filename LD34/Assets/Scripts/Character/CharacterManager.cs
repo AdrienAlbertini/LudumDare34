@@ -83,9 +83,7 @@ public class CharacterManager : MonoBehaviour
                 AudioManager.Instance.PlaySound("MisterDeath");
                 this._audioSource.Stop();
                 GameObject.Destroy(this.PlayerA.transform.parent.gameObject);
-                this.PlayerA = null;
-                if (PlayerB == null)
-                    LevelsManager.Instance.ReloadScene(true, 1.0f);
+                LevelsManager.Instance.ReloadScene(true, 1.0f);
             }
             else
             {
@@ -95,9 +93,7 @@ public class CharacterManager : MonoBehaviour
                 AudioManager.Instance.PlaySound("LadyDeath");
                 this._audioSource.Stop();
                 GameObject.Destroy(this.PlayerB.transform.parent.gameObject);
-                this.PlayerB = null;
-                if (PlayerA == null)
-                    LevelsManager.Instance.ReloadScene(true, 1.0f);
+                LevelsManager.Instance.ReloadScene(true, 1.0f);
             }
         }
     }
@@ -106,7 +102,6 @@ public class CharacterManager : MonoBehaviour
     {
         if (PlayerA && PlayerB)
         {
-            Debug.Log("OnGrow");
             this._audioSource.Stop();
             this._audioSource.clip = this.growSound;
             this._audioSource.volume = this.growSoundVolume;
@@ -115,7 +110,6 @@ public class CharacterManager : MonoBehaviour
     }
     private void _OnGrowEnd(object sender, EventArgs e)
     {
-        Debug.Log("OnGrowEnd");
         if (PlayerA && PlayerB && PlayerA.Grow == false && PlayerB.Grow == false)
             this._audioSource.Stop();
     }
