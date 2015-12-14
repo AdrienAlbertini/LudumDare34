@@ -64,7 +64,7 @@
  </tileset>
  <layer name="Calque de Tile 1" width="15" height="13">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFIx3wMDAc4IbSQMzABaEXEKMXqC+BH0gDcQIvkAZhASCbWHthepDxQAEAwAwFpg==
+   eJxjYBgFIxXwMDAc4IbSQMzABaEXcEHF8OkF6kvgB9JAnMALpEFYAMjmg4oRshemBxvGBzghdizgh5rBB8EHiNFLCAAAA9EJ/A==
   </data>
  </layer>
 </map>
