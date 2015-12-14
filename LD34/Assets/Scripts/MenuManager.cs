@@ -38,9 +38,19 @@ public class MenuManager : MonoBehaviour
     {
         if (Event.current.Equals(Event.KeyboardEvent("Escape")))
         {
-            Cursor.visible = true;
-            this.holder.SetActive(true);
-            Time.timeScale = 0;
+            if (Time.timeScale == 1)
+            {
+                Cursor.visible = true;
+                this.holder.SetActive(true);
+                Time.timeScale = 0;
+            }
+            else
+            {
+                Cursor.visible = false;
+                this.holder.SetActive(false);
+                Time.timeScale = 1;
+            }
+            
         }
     }
 }
