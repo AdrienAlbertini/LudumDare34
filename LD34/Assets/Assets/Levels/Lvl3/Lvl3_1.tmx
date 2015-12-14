@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="15" height="13" tilewidth="200" tileheight="200" nextobjectid="1">
+ <tileset firstgid="1" name="Gonfli" tilewidth="200" tileheight="200" tilecount="20">
+  <tile id="0">
+   <image width="200" height="200" source="../../Sprites/Back-Grass1.png"/>
+  </tile>
+  <tile id="1">
+   <image width="200" height="200" source="../../Sprites/Back-Grass2.png"/>
+  </tile>
+  <tile id="2">
+   <image width="200" height="200" source="../../Sprites/Back-Grass3.png"/>
+  </tile>
+  <tile id="3">
+   <image width="200" height="200" source="../../Sprites/Back-Grass4.png"/>
+  </tile>
+  <tile id="4">
+   <image width="200" height="200" source="../../Sprites/Back-Grass5.png"/>
+  </tile>
+  <tile id="5">
+   <image width="200" height="200" source="../../Sprites/FrontGrass1.png"/>
+  </tile>
+  <tile id="6">
+   <image width="200" height="200" source="../../Sprites/FrontGrass2.png"/>
+  </tile>
+  <tile id="7">
+   <image width="200" height="200" source="../../Sprites/FrontGrass3.png"/>
+  </tile>
+  <tile id="8">
+   <image width="200" height="200" source="../../Sprites/Ground-Blocks1.png"/>
+  </tile>
+  <tile id="9">
+   <image width="200" height="200" source="../../Sprites/Ground-Blocks2.png"/>
+  </tile>
+  <tile id="10">
+   <image width="200" height="200" source="../../Sprites/Ground-Blocks3.png"/>
+  </tile>
+  <tile id="11">
+   <image width="200" height="200" source="../../Sprites/Ground-Blocks4.png"/>
+  </tile>
+  <tile id="12">
+   <image width="200" height="200" source="../../Sprites/Ground-Blocks-Empty.png"/>
+  </tile>
+  <tile id="13">
+   <image width="200" height="200" source="../../Sprites/Ground-Blocks-Soft1.png"/>
+  </tile>
+  <tile id="14">
+   <image width="200" height="200" source="../../Sprites/Ground-Blocks-Soft2.png"/>
+  </tile>
+  <tile id="15">
+   <image width="200" height="200" source="../../Sprites/Ground-Blocks-Soft3.png"/>
+  </tile>
+  <tile id="16">
+   <image width="200" height="200" source="../../Sprites/Pic1.png"/>
+  </tile>
+  <tile id="17">
+   <image width="200" height="200" source="../../Sprites/Pic2.png"/>
+  </tile>
+  <tile id="18">
+   <image width="200" height="200" source="../../Sprites/Pic3.png"/>
+  </tile>
+  <tile id="19">
+   <image width="200" height="200" source="../../Sprites/Pic4.png"/>
+  </tile>
+ </tileset>
+ <layer name="Calque de Tile 1" width="15" height="13">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgF9AA8DAwHoHgBF5DPDWQD6QVAOoETSOPTyw9UA8J8ELwAiA8AMYMAxAy8gBcH5ifCXlx6Qe7gJtNePoifybIX6GYGoH8TyNHLS4ReADHwDeg=
+  </data>
+ </layer>
+</map>
