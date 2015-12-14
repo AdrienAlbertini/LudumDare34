@@ -200,7 +200,6 @@ public class Platformer2DUserControl : MonoBehaviour
             Vector2 vec = m_Character.GetComponent<Rigidbody2D>().velocity;
             vec.y = 0.0f;
             m_Character.GetComponent<Rigidbody2D>().velocity = vec;
-            Debug.Log("Nogravity" + "   " + IsPLayerA);
             canJump = false;
         }
         else
