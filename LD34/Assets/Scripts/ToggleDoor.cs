@@ -86,10 +86,6 @@ public class ToggleDoor : MonoBehaviour, PressurePlateListener
                 t += speed * Time.deltaTime;
                 transform.position = Vector3.Lerp(startPos, endPos, t);
             }
-            else
-            {
-                Debug.Log("DeltaTime: " + Time.deltaTime);
-            }
             yield return new WaitForEndOfFrame();
         }
     }
