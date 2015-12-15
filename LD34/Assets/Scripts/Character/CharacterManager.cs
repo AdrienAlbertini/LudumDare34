@@ -41,7 +41,7 @@ public class CharacterManager : MonoBehaviour
     void Update()
     {
         if (this._hasGrown && (this.SizePlayerA == MaxSize || this.SizePlayerB == MaxSize)
-            && PlayerA && PlayerB)
+            && PlayerA && PlayerB && PlayerA.gameObject.activeSelf && PlayerB.gameObject.activeSelf)
         {
             if (this._explosion <= 0.0f)
             {
@@ -116,57 +116,55 @@ public class CharacterManager : MonoBehaviour
 
     public bool Grow(bool _IsGrowing, bool _IsPlayerA)
     {
-        if (this.PlayerA && this.PlayerA.gameObject.activeSelf
-            && this.PlayerB && this.PlayerB.gameObject.activeSelf)
+        /*if (_IsGrowing == true)
+        {*/
+        if (!_IsPlayerA && PlayerA != null && !PlayerA.calculateIfIcanGrow())
+            return false;
+        else if (_IsPlayerA && PlayerB != null && !PlayerB.calculateIfIcanGrow())
+            return false;
+        if (PlayerA == null || !PlayerA.isActiveAndEnabled)
+            PlayerB.calculateIfIcanGrow();
+
+        if (PlayerB == null || !PlayerB.isActiveAndEnabled)
+            PlayerA.calculateIfIcanGrow();
+
+        //	}
+        if (SizePlayerA < MinSize || SizePlayerB < MinSize)
         {
-            /*if (_IsGrowing == true)
-            {*/
-            if (!_IsPlayerA && PlayerA != null && !PlayerA.calculateIfIcanGrow())
-                return false;
-            else if (_IsPlayerA && PlayerB != null && !PlayerB.calculateIfIcanGrow())
-                return false;
-            if (PlayerA == null || !PlayerA.isActiveAndEnabled)
-                PlayerB.calculateIfIcanGrow();
-
-            if (PlayerB == null || !PlayerB.isActiveAndEnabled)
-                PlayerA.calculateIfIcanGrow();
-
-            //	}
-            if (SizePlayerA < MinSize || SizePlayerB < MinSize)
+            Debug.LogWarning("Size is " + SizePlayerA + " " + SizePlayerB);
+        }
+        if (_IsGrowing == true)
+        {
+            this._hasGrown = true;
+            if (_IsPlayerA)
             {
-                Debug.LogWarning("Size is " + SizePlayerA + " " + SizePlayerB);
-            }
-            if (_IsGrowing == true)
-            {
-                this._hasGrown = true;
-                if (_IsPlayerA)
+                if (SizePlayerA - 0.1f <= MinSize)
                 {
-                    if (SizePlayerA - 0.1f <= MinSize)
-                    {
-                        SizePlayerB = MaxSize;
-                        SizePlayerA = MinSize;
-                    }
-                    else
-                    {
-                        SizePlayerA -= 0.1f;
-                        SizePlayerB += 0.1f;
-                    }
+                    SizePlayerB = MaxSize;
+                    SizePlayerA = MinSize;
                 }
                 else
                 {
-                    if (SizePlayerB - 0.1 <= MinSize)
-                    {
-                        SizePlayerA = MaxSize;
-                        SizePlayerB = MinSize;
-                    }
-                    else
-                    {
-                        SizePlayerA += 0.1f;
-                        SizePlayerB -= 0.1f;
-                    }
+                    SizePlayerA -= 0.1f;
+                    if (this.PlayerB && this.PlayerB.gameObject.activeSelf)
+                        SizePlayerB += 0.1f;
                 }
-                return true;
             }
+            else
+            {
+                if (SizePlayerB - 0.1 <= MinSize)
+                {
+                    SizePlayerA = MaxSize;
+                    SizePlayerB = MinSize;
+                }
+                else
+                {
+                    if (this.PlayerA && this.PlayerA.gameObject.activeSelf)
+                        SizePlayerA += 0.1f;
+                    SizePlayerB -= 0.1f;
+                }
+            }
+            return true;
         }
         return false;
     }
