@@ -102,10 +102,10 @@ public class CharacterManager : MonoBehaviour
     {
         if (PlayerA && PlayerB)
         {
-            this._audioSource.Stop();
-            this._audioSource.clip = this.growSound;
-            this._audioSource.volume = this.growSoundVolume;
-            this._audioSource.Play();
+            //this._audioSource.Stop();
+            //this._audioSource.clip = this.growSound;
+            //this._audioSource.volume = this.growSoundVolume;
+            //this._audioSource.Play();
         }
     }
     private void _OnGrowEnd(object sender, EventArgs e)
