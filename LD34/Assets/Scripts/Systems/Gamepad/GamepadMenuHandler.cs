@@ -19,7 +19,7 @@ public class GamepadMenuHandler : MonoBehaviour
         this.currentSelectedButton.GetComponentInChildren<Text>().color = this.selectedTextColor;
     }
 
-    void FixedUpdate()
+    void Update()
     {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
