@@ -64,7 +64,7 @@ public class MainMenuManager : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < SaveManager.data.levelID; i++)
+            for (int i = 0; i < (SaveManager.data.levelID - 1); i++)
             {
                 this.selectLvl.transform.GetChild(i + 1).GetComponent<Button>().interactable = true;
             }
