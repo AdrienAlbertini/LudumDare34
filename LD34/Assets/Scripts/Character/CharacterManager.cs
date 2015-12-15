@@ -41,7 +41,7 @@ public class CharacterManager : MonoBehaviour
     void Update()
     {
         if (this._hasGrown && (this.SizePlayerA == MaxSize || this.SizePlayerB == MaxSize)
-            && PlayerA && PlayerB)
+            && PlayerA && PlayerB && PlayerA.gameObject.activeSelf && PlayerB.gameObject.activeSelf)
         {
             if (this._explosion <= 0.0f)
             {
@@ -117,7 +117,7 @@ public class CharacterManager : MonoBehaviour
     public bool Grow(bool _IsGrowing, bool _IsPlayerA)
     {
         /*if (_IsGrowing == true)
-		{*/
+        {*/
         if (!_IsPlayerA && PlayerA != null && !PlayerA.calculateIfIcanGrow())
             return false;
         else if (_IsPlayerA && PlayerB != null && !PlayerB.calculateIfIcanGrow())
@@ -146,7 +146,8 @@ public class CharacterManager : MonoBehaviour
                 else
                 {
                     SizePlayerA -= 0.1f;
-                    SizePlayerB += 0.1f;
+                    if (this.PlayerB && this.PlayerB.gameObject.activeSelf)
+                        SizePlayerB += 0.1f;
                 }
             }
             else
@@ -158,7 +159,8 @@ public class CharacterManager : MonoBehaviour
                 }
                 else
                 {
-                    SizePlayerA += 0.1f;
+                    if (this.PlayerA && this.PlayerA.gameObject.activeSelf)
+                        SizePlayerA += 0.1f;
                     SizePlayerB -= 0.1f;
                 }
             }

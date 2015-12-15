@@ -18,7 +18,7 @@ public class GamepadButtonHandler : MonoBehaviour
 
     public void TriggerButton()
     {
-        if (this._button != null)
+        if (this._button != null && this._button.IsInteractable())
             this._button.onClick.Invoke();
     }
 }
