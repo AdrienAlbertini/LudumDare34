@@ -6,8 +6,10 @@ public class MainMenuManager : MonoBehaviour
 {
     public GameObject holder;
     public GameObject selectLvl;
+    public GameObject credits;
     public GamepadButtonHandler continueButton;
     public GamepadButtonHandler selectLevelButton;
+    public GamepadButtonHandler creditsButton;
     public GamepadMenuHandler menuHandler;
     public bool isAllLevels = false;
     public InputField lvlLoaderField;
@@ -22,9 +24,13 @@ public class MainMenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.JoystickButton1) && this.selectLvl.activeSelf)
+        if (Input.GetKeyDown(KeyCode.JoystickButton1)
+            && (this.selectLvl.activeSelf || this.credits.activeSelf))
         {
-            this.menuHandler.NewSelectedButton(this.selectLevelButton);
+            if (this.selectLvl.activeSelf)
+                this.menuHandler.NewSelectedButton(this.selectLevelButton);
+            else if (this.credits.activeSelf)
+                this.menuHandler.NewSelectedButton(this.creditsButton);
             AudioManager.Instance.PlaySound("MenuJoystickPush", 1.0f);
             this.BackToMainMenu();
         }
@@ -39,6 +45,7 @@ public class MainMenuManager : MonoBehaviour
     {
         this.holder.SetActive(true);
         this.selectLvl.SetActive(false);
+        this.credits.SetActive(false);
     }
 
     public void SelectLevel()
@@ -62,6 +69,12 @@ public class MainMenuManager : MonoBehaviour
                 this.selectLvl.transform.GetChild(i + 1).GetComponent<Button>().interactable = true;
             }
         }
+    }
+
+    public void Credits()
+    {
+        this.holder.SetActive(false);
+        this.credits.SetActive(true);
     }
 
     public void LvlLoaderEndEdit()
