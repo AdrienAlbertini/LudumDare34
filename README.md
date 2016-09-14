@@ -17,7 +17,11 @@ Graphic Design by William Gelberg (ENSAAMA)
 Developers (Epitech): 
 
 Adrien Albertini 
+
 Julien Edmond 
+
 Noé Gambini 
+
 Thomas Nabet 
+
 Paul-Antoine Riva 
